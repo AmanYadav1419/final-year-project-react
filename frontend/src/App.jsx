@@ -7,4 +7,3 @@ const App = () => {
 };
 
 export default App;
-// video start from 20:50
