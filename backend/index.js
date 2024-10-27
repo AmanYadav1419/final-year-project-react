@@ -7,6 +7,9 @@ dotenv.config();
 // created server
 const app = express();
 
+// using middlewares
+app.use(express.json())
+
 // created the server port , imported from .env file
 const port = process.env.PORT;
 
