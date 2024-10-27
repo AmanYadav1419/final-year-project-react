@@ -3,7 +3,7 @@
 import { User } from "../models/User.js";
 import generateToken from "../utils/generateToken.js";
 import TryCatch from "../utils/TryCatch.js";
-import bcrypt from "bcrpyt";
+import bcrypt from "bcrypt";
 
 // async function of register user controller
 // TryCatch is basically a try catch block written in the file
@@ -27,24 +27,25 @@ export const registerUser = TryCatch(async (req, res) => {
   // if user not already exists that means we need to create user
   // then we firstly hash the password
   const hashPassword = await bcrypt.hash(password, 10);
+  // const hashPassword = await bcrypt.hash(password, 10);
 
-    // new User creation 
+  // new User creation
   user = await User.create({
     name,
     email,
     // password as the hashPassword
     password: hashPassword,
   });
-  
-  // created the token / cookie 
-  generateToken(user._id, res)
 
-  // at last return the status and sucess message 
+  // created the token / cookie
+  generateToken(user._id, res);
+
+  // at last return the status and sucess message
   // of user registerd sucessfully
   res.staus(201).json({
     user,
-    message: "User Registerd Sucessfully"
-  })
+    message: "User Registerd Sucessfully",
+  });
 });
 
 // video start from 39:30
