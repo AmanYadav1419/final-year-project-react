@@ -25,7 +25,7 @@ export const isAuth = async (req, res, next) => {
       });
 
     // if the decoded data is correct then find the specific user by id
-    res.user = await User.findById(decodedData.id);
+    req.user = await User.findById(decodedData.id);
 
     // is function se nikalne ke liye next function ko call kiya
     next();

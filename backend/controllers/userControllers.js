@@ -88,3 +88,13 @@ export const loginUser = TryCatch(async (req, res) => {
     message: "User LoggedIn Sucessfully",
   });
 });
+
+
+// to fetch the user profile and details
+export const myProfile = TryCatch(async(req, res) => {
+  // find the user by the req id which get from the isAuth middleware
+  const user = await User.findById(req.user._id);
+
+  // send the res of user 
+  res.json(user);
+})
