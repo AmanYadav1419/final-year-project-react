@@ -74,7 +74,7 @@ export const loginUser = TryCatch(async (req, res) => {
   // if comapre password is not equal to password, that mean wrong password
   if (!comparePassword)
     return res.status(400).json({
-  // we write credentials
+      // we write credentials
       message: "Wrong Credentials",
     });
 
@@ -89,12 +89,22 @@ export const loginUser = TryCatch(async (req, res) => {
   });
 });
 
-
 // to fetch the user profile and details
-export const myProfile = TryCatch(async(req, res) => {
+export const myProfile = TryCatch(async (req, res) => {
   // find the user by the req id which get from the isAuth middleware
   const user = await User.findById(req.user._id);
 
-  // send the res of user 
+  // send the res of user
   res.json(user);
-})
+});
+
+// to Logout the user
+export const logoutUser = TryCatch(async (req, res) => {
+  // make the token to empty , & maxAge is 0 , it instatly removes
+  res.cookie("token", "", { maxAge: 0 });
+
+  // return the message of logged out 
+  res.json({
+    message: "Logged Out Successfully",
+  });
+});
