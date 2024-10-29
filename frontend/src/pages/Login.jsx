@@ -13,6 +13,7 @@ const Login = () => {
     // to stop the page reload of the form after submisson of form
     e.preventDefault();
 
+    // for checking all the values in console
     console.log(email, password);
   };
 
