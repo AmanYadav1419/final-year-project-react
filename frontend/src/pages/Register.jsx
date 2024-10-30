@@ -94,5 +94,5 @@ const Register = () => {
   );
 };
 
-// video start from 1:13:10 
+
 export default Register;
