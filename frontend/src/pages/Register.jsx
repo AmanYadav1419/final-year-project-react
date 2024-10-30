@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { UserData } from "../context/User";
 
 const headingText = "Register to RhythmNet";
 
@@ -9,13 +10,20 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
 
+  // accept all the data from user context i.e fn name UserData()
+  const { registerUser, btnLoading } = UserData();
+
+  // navigate function to navigate from one route to another route
+  const navigate = useNavigate();
+
   // form submit handler
   const submitHandler = (e) => {
     // to stop the page reload of the form after submisson of form
     e.preventDefault();
 
     // for checking all the values in console
-    console.log(name, email, password);
+    // console.log(name, email, password);
+    registerUser(name, email, password, navigate);
   };
 
   return (
@@ -77,7 +85,14 @@ const Register = () => {
           </div>
 
           {/* btn for submit or Register */}
-          <button className="auth-btn">Register</button>
+          <button
+            // set btn disabled until BtnLoading is there
+            disabled={btnLoading}
+            className="auth-btn"
+          >
+            {/* condition if btnLoading is there show please wait message if not show register */}
+            {btnLoading ? "Please Wait..." : "Register"}
+          </button>
         </form>
 
         {/* this div for redirect to login page if user have an account*/}
@@ -93,6 +108,5 @@ const Register = () => {
     </div>
   );
 };
-
 
 export default Register;

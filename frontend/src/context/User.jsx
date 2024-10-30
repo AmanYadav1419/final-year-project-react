@@ -1,7 +1,7 @@
 // To define and store all the user states globally
 
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { createContext } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -55,8 +55,38 @@ export const UserProvider = ({ children }) => {
     }
   }
 
+  // function to fetch the user
+  async function fetchUser() {
+    try {
+      // we get the user from data
+      const { data } = await axios.get("/api/user/me");
+
+      // set the user state to data
+      setUser(data);
+
+      // set is auth as true as the user is authenticated
+      setIsAuth(true);
+
+      // then set loading false , as the user is fethced succesfully
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+
+      // set is auth as false as got an error
+      setIsAuth(false);
+
+      // then set loading false , as got an error
+      setLoading(false);
+    }
+  }
+
+  // to fetch the user on side effect, or on loading the page
+  useEffect(() => {
+    fetchUser();
+  }, []);
   return (
-    <UserContext.Provider value={{}}>
+    // value is for providing all the data which will be passed through globally
+    <UserContext.Provider value={{ registerUser, user, isAuth, btnLoading }}>
       {children}
       <Toaster />
     </UserContext.Provider>
@@ -66,3 +96,4 @@ export const UserProvider = ({ children }) => {
 export const UserData = () => {
   useContext(UserContext);
 };
+// video start from 1:26:30
