@@ -86,7 +86,7 @@ export const UserProvider = ({ children }) => {
   }, []);
   return (
     // value is for providing all the data which will be passed through globally
-    <UserContext.Provider value={{ registerUser, user, isAuth, btnLoading }}>
+    <UserContext.Provider value={{ registerUser, user, isAuth, btnLoading, loading }}>
       {children}
       <Toaster />
     </UserContext.Provider>
@@ -96,4 +96,3 @@ export const UserProvider = ({ children }) => {
 export const UserData = () => {
   useContext(UserContext);
 };
-// video start from 1:26:30
