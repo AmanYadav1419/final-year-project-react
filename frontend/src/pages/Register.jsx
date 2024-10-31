@@ -23,6 +23,7 @@ const Register = () => {
 
     // for checking all the values in console
     // console.log(name, email, password);
+    // send the essential data
     registerUser(name, email, password, navigate);
   };
 
