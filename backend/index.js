@@ -2,8 +2,16 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDb from "./database/db.js";
 import cookieParser from "cookie-parser";
+import cloudinary from "cloudinary";
 
 dotenv.config();
+
+// config of cloudinary
+cloudinary.v2({
+  Cloud_name: process.env.Cloud_Name,
+  api_key: process.env.Cloud_Api,
+  api_secret: process.env.Cloud_Secret,
+});
 
 // created server
 const app = express();
