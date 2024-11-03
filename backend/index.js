@@ -27,10 +27,13 @@ const port = process.env.PORT;
 
 // importing routes
 import userRoutes from "./routes/userRoutes.js";
+import songRoutes from "./routes/songRoutes.js";
 
 // using routes
 app.use("/api/user", userRoutes);
 
+// using song routes 
+app.use("/api/song", songRoutes)
 // starting or checking running correctly or not
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
