@@ -3,7 +3,7 @@
 import express from "express";
 import { isAuth } from "../middlewares/isAuth.js";
 import uploadFile from "../middlewares/multer.js";
-import { createAlbum } from "../controllers/songControllers.js";
+import { createAlbum, getAllAlbums } from "../controllers/songControllers.js";
 
 // declare router
 const router = express.Router();
@@ -14,6 +14,8 @@ const router = express.Router();
 
 router.post("/album/new", isAuth, uploadFile, createAlbum);
 
+// to find the album below is the route
+router.get("/album/all", isAuth, getAllAlbums)
+
 // exporting the router
 export default router;
-// video start from 1:50:49

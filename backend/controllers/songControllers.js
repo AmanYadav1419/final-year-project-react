@@ -26,7 +26,7 @@ export const createAlbum = TryCatch(async (req, res) => {
   const cloud = await cloudinary.v2.uploader.upload(fileUrl.content);
 
   // in that created an album
-  await Album({
+  await Album.create({
     title,
     description,
     thumbnail: {
@@ -40,3 +40,12 @@ export const createAlbum = TryCatch(async (req, res) => {
     message: "Album Added Sucessfully",
   });
 });
+
+// created a controller for getting all albums
+export const getAllAlbums = TryCatch(async(req, res) => {
+  // in that find all albums
+  const albums = await Album.find()
+
+  // then send the response of finded albums
+  res.json(albums)
+})
