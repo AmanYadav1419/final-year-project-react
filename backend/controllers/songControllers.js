@@ -132,3 +132,12 @@ export const addThumbnail = TryCatch(async (req, res) => {
     message: "Thumbnail Added Sucessfully",
   });
 });
+
+// created a controller to fetch/get all songs
+export const getAllSongs = TryCatch(async (req, res) => {
+  // in that find the songs
+  const songs = await Song.find();
+
+  // then send the response of songs
+  res.json(songs);
+});
