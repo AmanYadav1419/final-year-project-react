@@ -3,7 +3,7 @@
 import express from "express";
 import { isAuth } from "../middlewares/isAuth.js";
 import uploadFile from "../middlewares/multer.js";
-import { createAlbum, getAllAlbums } from "../controllers/songControllers.js";
+import { addSong, addThumbnail, createAlbum, getAllAlbums, getAllSongs, getAllSongsByAlbum } from "../controllers/songControllers.js";
 
 // declare router
 const router = express.Router();
@@ -16,6 +16,18 @@ router.post("/album/new", isAuth, uploadFile, createAlbum);
 
 // to find the album below is the route
 router.get("/album/all", isAuth, getAllAlbums)
+
+// to add a song below is the route
+router.post("/new", isAuth, uploadFile, addSong);
+
+// to add a thumbnail below is the route
+router.post("/:id", isAuth, uploadFile, addThumbnail);
+
+// to get all songs below is the route
+router.get("/all", isAuth, getAllSongs);
+
+// to get all songs by albums below is the route
+router.get("/album/:id", isAuth, getAllSongsByAlbum);
 
 // exporting the router
 export default router;
