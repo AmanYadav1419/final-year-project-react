@@ -95,4 +95,40 @@ export const addSong = TryCatch(async (req, res) => {
     message: "Song Added Sucessfully",
   });
 });
-// video start from 2:00:20
+
+// created a controller to add thumbnail
+export const addThumbnail = TryCatch(async (req, res) => {
+  // firstly check that user role is admin or not
+  // if user role is not admin return error of not an admin / unauthorised
+  if (req.user.role !== "admin")
+    return res.status(403).json({
+      message: "You are not an admin",
+    });
+
+  // get the file from request
+  const file = req.file;
+
+  // get the file url from getDataurl fn
+  const fileUrl = getDataurl(file);
+
+  // get the value from cloduinary
+  // fileUrl.content is thumbnail
+  const cloud = await cloudinary.v2.uploader.upload(fileUrl.content);
+
+  // to updated the music / song
+  await Song.findOneAndUpdate(
+    req.params.id,
+    {
+      thumbnail: {
+        id: cloud.public_id,
+        url: cloud.secure_url,
+      },
+    },
+    { new: true }
+  );
+
+  // after that thumbnail is added response with a message
+  res.json({
+    message: "Thumbnail Added Sucessfully",
+  });
+});
