@@ -141,3 +141,18 @@ export const getAllSongs = TryCatch(async (req, res) => {
   // then send the response of songs
   res.json(songs);
 });
+
+// created a controller to fetch/get all songs by albums
+export const getAllSongsByAlbum = TryCatch(async (req, res) => {
+  // in that find the album by its id
+  // it will get from request -> params -> id
+  const album = await Album.findById(req.params.id);
+
+  // find songs through albums
+  const songs = await Song.find({ album: req.params.id });
+
+  // then send the response as album and songs of finded songs by albums
+  res.json({ album, songs });
+});
+
+// video start from 2:07:50
