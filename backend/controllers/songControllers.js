@@ -116,7 +116,8 @@ export const addThumbnail = TryCatch(async (req, res) => {
   const cloud = await cloudinary.v2.uploader.upload(fileUrl.content);
 
   // to updated the music / song
-  await Song.findOneAndUpdate(
+  // first find the song by id and then update
+  await Song.findByIdAndUpdate(
     req.params.id,
     {
       thumbnail: {
@@ -155,4 +156,3 @@ export const getAllSongsByAlbum = TryCatch(async (req, res) => {
   res.json({ album, songs });
 });
 
-// video start from 2:07:50
