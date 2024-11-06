@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import { UserData } from "./context/User";
 import Loading from "./components/Loading";
+import Admin from "./pages/Admin";
 
 const App = () => {
   // import essential data from context
@@ -22,6 +23,9 @@ const App = () => {
             {/* defines the routes for different pages  */}
             {/* if user is authenticatd then only go to home page else go to login page */}
             <Route path="/" element={isAuth ? <Home /> : <Login />} />
+            
+            {/* if user is authenticatd then only go to Admin page else go to login page */}
+            <Route path="/admin" element={isAuth ? <Admin /> : <Login />} />
 
             {/* if user is authenticatd then only go to home page else go to login page */}
             <Route path="/login" element={isAuth ? <Home /> : <Login />} />
