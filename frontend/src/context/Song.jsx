@@ -13,6 +13,8 @@ export const SongProvider = ({ children }) => {
   const [songloading, setSongLoading] = useState(true);
   // for button loading
   const [loading, setLoading] = useState(false);
+  // to store the albums
+  const [albums, setAlbums] = useState([]);
 
   // to fetch all the songs
   async function fetchSongs() {
@@ -43,14 +45,33 @@ export const SongProvider = ({ children }) => {
     }
   }
 
+  //   to fetch all the albums
+  async function fetchAlbums() {
+    try {
+      // to fetch the albums
+      const { data } = await axios.get("/api/song/album/all");
+
+      // set the fetched albums to state
+      setAlbums(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   //  useeffect to make the fetch function call and for rendering of songs
+  //  and albums
   useEffect(() => {
     // call the fetch function, so when page load/reload the fetch function calls
     fetchSongs();
+
+    // call the fetch function, so when page load/reload the fetch function calls
+    fetchAlbums();
   }, []);
 
   return (
-    <SongContext.Provider value={{ songs, addAlbum, loading, songloading }}>
+    <SongContext.Provider
+      value={{ songs, addAlbum, loading, songloading, albums }}
+    >
       {children}
     </SongContext.Provider>
   );
