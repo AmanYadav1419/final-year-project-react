@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 // created a context
 const SongContext = createContext();
@@ -26,6 +27,22 @@ export const SongProvider = ({ children }) => {
     }
   }
 
+  //  function to add albums
+  async function addAlbum(formData) {
+    setLoading(true);
+    try {
+      // to add a abum
+      const { data } = await axios.post("/api/song/album/new", formData);
+      // then send the success message in toastify ui ui format
+      toast.success(data.message);
+      setLoading(false);
+    } catch (error) {
+      // show the error in toastify ui format
+      toast.error(error.response.data.message);
+      setLoading(false);
+    }
+  }
+
   //  useeffect to make the fetch function call and for rendering of songs
   useEffect(() => {
     // call the fetch function, so when page load/reload the fetch function calls
@@ -33,7 +50,9 @@ export const SongProvider = ({ children }) => {
   }, []);
 
   return (
-    <SongContext.Provider value={{ songs }}>{children}</SongContext.Provider>
+    <SongContext.Provider value={{ songs, addAlbum, loading, songloading }}>
+      {children}
+    </SongContext.Provider>
   );
 };
 
