@@ -2,6 +2,7 @@ import React from "react";
 import { UserData } from "../context/User";
 import { Link, useNavigate } from "react-router-dom";
 import { SongData } from "../context/Song";
+import { MdDelete } from "react-icons/md";
 
 const Admin = () => {
   // add a condition only who had admin acess can acess this admin page
@@ -184,6 +185,20 @@ const Admin = () => {
                     </button>
                   </div>
                 )}
+
+                {/* song title */}
+                <h4 className="text-lg font-bold">{e.title}</h4>
+
+                {/* song singer */}
+                <h4 className="text-sm text-gray-500">{e.singer}</h4>
+
+                {/* song description */}
+                <h4 className="text-sm text-gray-500">{e.description}</h4>
+
+                {/* btn for delete */}
+                <button className="px-3 py-1 bg-red-500 text-white rounded">
+                  <MdDelete />
+                </button>
               </div>
             ))}
         </div>
