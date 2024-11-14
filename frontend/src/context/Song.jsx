@@ -38,6 +38,8 @@ export const SongProvider = ({ children }) => {
       // then send the success message in toastify ui ui format
       toast.success(data.message);
       setLoading(false);
+      // call the fetch album function
+      fetchAlbums
     } catch (error) {
       // show the error in toastify ui format
       toast.error(error.response.data.message);

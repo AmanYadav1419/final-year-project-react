@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { UserData } from "../context/User";
 import { Link, useNavigate } from "react-router-dom";
 import { SongData } from "../context/Song";
@@ -16,6 +16,26 @@ const Admin = () => {
 
   // if user is not admin then return to home page
   if (user && user.role !== "admin") return navigate("/");
+
+  // for title
+  const [title, setTitle] = useState("");
+  // for description
+  const [description, setDescription] = useState("");
+  // for singer
+  const [singer, setSinger] = useState("");
+  // for album
+  const [album, setAlbum] = useState("");
+  // for file
+  const [file, setFile] = useState(null);
+
+  // on change handler for file
+  const fileChangeHandler = (e) => {
+    // get the very first file
+    const file = e.target.files[0];
+    // send or setted the file to the state
+    setFile(file);
+  };
+
   return (
     <div className="min-h-screen bg-[#212121] text-white p-8">
       {/* redirect or send to home page */}
@@ -37,10 +57,10 @@ const Admin = () => {
             placeholder="Title"
             className="auth-input"
             required
-            // // value as password
-            // value={password}
-            // // on typing the password value should be print or written
-            // onChange={(e) => setPassword(e.target.value)}
+            // value as title
+            value={title}
+            // on typing the title value should be print or written
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
 
@@ -52,10 +72,10 @@ const Admin = () => {
             placeholder="Description"
             className="auth-input"
             required
-            // // value as password
-            // value={password}
-            // // on typing the password value should be print or written
-            // onChange={(e) => setPassword(e.target.value)}
+            // value as description
+            value={description}
+            // on typing the description value should be print or written
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
 
@@ -67,6 +87,8 @@ const Admin = () => {
             // it should only accept image
             accept="image/*"
             className="auth-input"
+            // added onchnage event file handler
+            onChange={fileChangeHandler}
             required
           />
         </div>
@@ -89,10 +111,10 @@ const Admin = () => {
             placeholder="Title"
             className="auth-input"
             required
-            // // value as password
-            // value={password}
-            // // on typing the password value should be print or written
-            // onChange={(e) => setPassword(e.target.value)}
+            // value as title
+            value={title}
+            // on typing the title value should be print or written
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
 
@@ -104,10 +126,10 @@ const Admin = () => {
             placeholder="Description"
             className="auth-input"
             required
-            // // value as password
-            // value={password}
-            // // on typing the password value should be print or written
-            // onChange={(e) => setPassword(e.target.value)}
+            // value as description
+            value={description}
+            // on typing the description value should be print or written
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
 
@@ -119,15 +141,21 @@ const Admin = () => {
             placeholder="Singer"
             className="auth-input"
             required
-            // // value as password
-            // value={password}
-            // // on typing the password value should be print or written
-            // onChange={(e) => setPassword(e.target.value)}
+            // value as singer
+            value={singer}
+            // on typing the singer value should be print or written
+            onChange={(e) => setSinger(e.target.value)}
           />
         </div>
 
         {/* map all the albums in this */}
-        <select className="auth-input">
+        <select
+          className="auth-input"
+          // value as album
+          value={album}
+          // onchange event handler
+          onChange={(e) => setAlbum(e.target.value)}
+        >
           {/* initially show the dummy option */}
           <option value="">Choose Album</option>
           {albums &&
@@ -146,6 +174,8 @@ const Admin = () => {
             // it should only accept audio
             accept="audio/*"
             className="auth-input"
+            // added onchnage event file handler
+            onChange={fileChangeHandler}
             required
           />
         </div>
@@ -179,7 +209,11 @@ const Admin = () => {
                 ) : (
                   // if thumbnail is not present then show this div
                   <div className="flex flex-col items-center justify-center gap-2">
-                    <input type="file" />
+                    <input
+                      type="file"
+                      // added onchnage event file handler
+                      onChange={fileChangeHandler}
+                    />
                     <button className="bg-green-500 text-white px-2 py-1 rounded">
                       Add Thumbnail
                     </button>
