@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { UserData } from "../context/User";
 import { Link, useNavigate } from "react-router-dom";
 import { SongData } from "../context/Song";
@@ -9,13 +9,49 @@ const Admin = () => {
   const { user } = UserData();
 
   // to get the albums and songs from Song.jsx
-  const { albums, songs } = SongData();
+  const { albums, songs, addAlbum } = SongData();
 
   // created a navigate function to navigate from one route to another route
   const navigate = useNavigate();
 
   // if user is not admin then return to home page
   if (user && user.role !== "admin") return navigate("/");
+
+  // for title
+  const [title, setTitle] = useState("");
+  // for description
+  const [description, setDescription] = useState("");
+  // for singer
+  const [singer, setSinger] = useState("");
+  // for album
+  const [album, setAlbum] = useState("");
+  // for file
+  const [file, setFile] = useState(null);
+
+  // on change handler for file
+  const fileChangeHandler = (e) => {
+    // get the very first file
+    const file = e.target.files[0];
+    // send or setted the file to the state
+    setFile(file);
+  };
+
+  // on submit of form handler
+  const addAlbumHandler = (e) => {
+    // firstly prevent the default behavoiur of form i.e page reload
+    e.preventDefault();
+
+    // get the form data
+    const formData = new FormData();
+
+    // append all data
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("file", file);
+
+    // call the add album function, and send formData to function with that all state functions
+    addAlbum(formData, setTitle, setDescription, setFile);
+  };
   return (
     <div className="min-h-screen bg-[#212121] text-white p-8">
       {/* redirect or send to home page */}
@@ -28,7 +64,11 @@ const Admin = () => {
 
       <h2 className="text-2xl font-bold mb-6 mt-6">Add Album</h2>
 
-      <form className="bg-[#181818] p-6 rounded-lg shadow-lg">
+      <form
+        // on submit of form handler
+        onSubmit={addAlbumHandler}
+        className="bg-[#181818] p-6 rounded-lg shadow-lg"
+      >
         {/* for title */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1">Title</label>
@@ -37,10 +77,10 @@ const Admin = () => {
             placeholder="Title"
             className="auth-input"
             required
-            // // value as password
-            // value={password}
-            // // on typing the password value should be print or written
-            // onChange={(e) => setPassword(e.target.value)}
+            // value as title
+            value={title}
+            // on typing the title value should be print or written
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
 
@@ -52,10 +92,10 @@ const Admin = () => {
             placeholder="Description"
             className="auth-input"
             required
-            // // value as password
-            // value={password}
-            // // on typing the password value should be print or written
-            // onChange={(e) => setPassword(e.target.value)}
+            // value as description
+            value={description}
+            // on typing the description value should be print or written
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
 
@@ -67,6 +107,8 @@ const Admin = () => {
             // it should only accept image
             accept="image/*"
             className="auth-input"
+            // added onchnage event file handler
+            onChange={fileChangeHandler}
             required
           />
         </div>
@@ -89,10 +131,10 @@ const Admin = () => {
             placeholder="Title"
             className="auth-input"
             required
-            // // value as password
-            // value={password}
-            // // on typing the password value should be print or written
-            // onChange={(e) => setPassword(e.target.value)}
+            // value as title
+            value={title}
+            // on typing the title value should be print or written
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
 
@@ -104,10 +146,10 @@ const Admin = () => {
             placeholder="Description"
             className="auth-input"
             required
-            // // value as password
-            // value={password}
-            // // on typing the password value should be print or written
-            // onChange={(e) => setPassword(e.target.value)}
+            // value as description
+            value={description}
+            // on typing the description value should be print or written
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
 
@@ -119,15 +161,21 @@ const Admin = () => {
             placeholder="Singer"
             className="auth-input"
             required
-            // // value as password
-            // value={password}
-            // // on typing the password value should be print or written
-            // onChange={(e) => setPassword(e.target.value)}
+            // value as singer
+            value={singer}
+            // on typing the singer value should be print or written
+            onChange={(e) => setSinger(e.target.value)}
           />
         </div>
 
         {/* map all the albums in this */}
-        <select className="auth-input">
+        <select
+          className="auth-input"
+          // value as album
+          value={album}
+          // onchange event handler
+          onChange={(e) => setAlbum(e.target.value)}
+        >
           {/* initially show the dummy option */}
           <option value="">Choose Album</option>
           {albums &&
@@ -146,6 +194,8 @@ const Admin = () => {
             // it should only accept audio
             accept="audio/*"
             className="auth-input"
+            // added onchnage event file handler
+            onChange={fileChangeHandler}
             required
           />
         </div>
@@ -167,7 +217,7 @@ const Admin = () => {
           {songs &&
             songs.map((e, i) => (
               // render a div for each song
-              <div className="bg-[#181818] p-4 rounded-lg shadow-md">
+              <div key={i} className="bg-[#181818] p-4 rounded-lg shadow-md">
                 {/* for showing thumbnail showing the condition, */}
                 {/* if thumbnail then only show the image, if not show a div */}
                 {e.thumbnail ? (
@@ -179,7 +229,11 @@ const Admin = () => {
                 ) : (
                   // if thumbnail is not present then show this div
                   <div className="flex flex-col items-center justify-center gap-2">
-                    <input type="file" />
+                    <input
+                      type="file"
+                      // added onchnage event file handler
+                      onChange={fileChangeHandler}
+                    />
                     <button className="bg-green-500 text-white px-2 py-1 rounded">
                       Add Thumbnail
                     </button>

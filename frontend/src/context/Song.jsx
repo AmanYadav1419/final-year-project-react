@@ -30,7 +30,9 @@ export const SongProvider = ({ children }) => {
   }
 
   //  function to add albums
-  async function addAlbum(formData) {
+  // and recieve all the new data geted from Admin.jsx
+  // to make all the states empty after album is get added
+  async function addAlbum(formData, setTitle, setDescription, setFile) {
     setLoading(true);
     try {
       // to add a abum
@@ -38,6 +40,14 @@ export const SongProvider = ({ children }) => {
       // then send the success message in toastify ui ui format
       toast.success(data.message);
       setLoading(false);
+      // call the fetch album function
+      fetchAlbums();
+
+      // empty all the recived states after fetching all albums,
+      // after successfully executing the function
+      setTitle("");
+      setDescription("");
+      setFile(null);
     } catch (error) {
       // show the error in toastify ui format
       toast.error(error.response.data.message);
