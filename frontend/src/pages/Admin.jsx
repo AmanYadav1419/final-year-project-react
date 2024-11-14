@@ -9,7 +9,7 @@ const Admin = () => {
   const { user } = UserData();
 
   // to get the albums and songs from Song.jsx
-  const { albums, songs } = SongData();
+  const { albums, songs, addAlbum } = SongData();
 
   // created a navigate function to navigate from one route to another route
   const navigate = useNavigate();
@@ -36,6 +36,22 @@ const Admin = () => {
     setFile(file);
   };
 
+  // on submit of form handler
+  const addAlbumHandler = (e) => {
+    // firstly prevent the default behavoiur of form i.e page reload
+    e.preventDefault();
+
+    // get the form data
+    const formData = new FormData();
+
+    // append all data
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("file", file);
+
+    // call the add album function, and send formData to function with that all state functions
+    addAlbum(formData, setTitle, setDescription, setFile);
+  };
   return (
     <div className="min-h-screen bg-[#212121] text-white p-8">
       {/* redirect or send to home page */}
@@ -48,7 +64,11 @@ const Admin = () => {
 
       <h2 className="text-2xl font-bold mb-6 mt-6">Add Album</h2>
 
-      <form className="bg-[#181818] p-6 rounded-lg shadow-lg">
+      <form
+        // on submit of form handler
+        onSubmit={addAlbumHandler}
+        className="bg-[#181818] p-6 rounded-lg shadow-lg"
+      >
         {/* for title */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1">Title</label>
@@ -197,7 +217,7 @@ const Admin = () => {
           {songs &&
             songs.map((e, i) => (
               // render a div for each song
-              <div className="bg-[#181818] p-4 rounded-lg shadow-md">
+              <div key={i} className="bg-[#181818] p-4 rounded-lg shadow-md">
                 {/* for showing thumbnail showing the condition, */}
                 {/* if thumbnail then only show the image, if not show a div */}
                 {e.thumbnail ? (
