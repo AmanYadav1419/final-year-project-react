@@ -8,8 +8,16 @@ const Admin = () => {
   // add a condition only who had admin acess can acess this admin page
   const { user } = UserData();
 
-  // to get the albums and songs from Song.jsx
-  const { albums, songs, addAlbum } = SongData();
+  // to get the respected data from Song.jsx
+  const {
+    albums,
+    songs,
+    addAlbum,
+    loading,
+    addSong,
+    addThumbnail,
+    deleteSong,
+  } = SongData();
 
   // created a navigate function to navigate from one route to another route
   const navigate = useNavigate();
@@ -52,6 +60,47 @@ const Admin = () => {
     // call the add album function, and send formData to function with that all state functions
     addAlbum(formData, setTitle, setDescription, setFile);
   };
+
+  // on submit of form handler for song
+  const addSongHandler = (e) => {
+    // firstly prevent the default behavoiur of form i.e page reload
+    e.preventDefault();
+
+    // get the form data
+    const formData = new FormData();
+
+    // append all data
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("singer", singer);
+    formData.append("album", album);
+    formData.append("file", file);
+
+    // call the add Song function, and send formData to function with that all state functions
+    addSong(formData, setTitle, setDescription, setFile, setSinger, setAlbum);
+  };
+
+  // on submit of form handler for song thumbnail
+  const addThumbnailHandler = (id) => {
+    // get the form data
+    const formData = new FormData();
+
+    // append all the data
+    formData.append("file", file);
+
+    // call the add Song thumbnail function, and send formData to function with that all state functions
+    addThumbnail(id, formData, setFile);
+  };
+
+  // on submit of form handler delete handler work
+  const deleteHandler = (id) => {
+    // first give the confirm message modal popup
+    // if it is true then only deletes the song by id
+    if (confirm("are you sure you want to delete this song")) {
+      deleteSong(id);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#212121] text-white p-8">
       {/* redirect or send to home page */}
@@ -122,7 +171,11 @@ const Admin = () => {
       {/* to add song  */}
       <h2 className="text-2xl font-bold mb-6 mt-6">Add Song</h2>
 
-      <form className="bg-[#181818] p-6 rounded-lg shadow-lg">
+      <form
+        // added on submit handler
+        onSubmit={addSongHandler}
+        className="bg-[#181818] p-6 rounded-lg shadow-lg"
+      >
         {/* for title */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1">Title</label>
@@ -201,8 +254,14 @@ const Admin = () => {
         </div>
 
         {/* button to add album */}
-        <button className="auth-btn" style={{ width: "100px" }}>
-          Add
+        <button
+          // until loading is there for adding album disabled the button
+          disabled={loading}
+          className="auth-btn"
+          style={{ width: "100px" }}
+        >
+          {/* based on condition change the button text */}
+          {loading ? "Please Wait!" : "Add"}
         </button>
       </form>
 
@@ -234,7 +293,12 @@ const Admin = () => {
                       // added onchnage event file handler
                       onChange={fileChangeHandler}
                     />
-                    <button className="bg-green-500 text-white px-2 py-1 rounded">
+                    <button
+                      // add on click submit handler for adding thumbnail
+                      // _id is the song id
+                      onClick={() => addThumbnail(e._id)}
+                      className="bg-green-500 text-white px-2 py-1 rounded"
+                    >
                       Add Thumbnail
                     </button>
                   </div>
@@ -250,7 +314,12 @@ const Admin = () => {
                 <h4 className="text-sm text-gray-500">{e.description}</h4>
 
                 {/* btn for delete */}
-                <button className="px-3 py-1 bg-red-500 text-white rounded">
+                <button
+                  // delete song handler
+                  // _id is the song id
+                  onClick={() => deleteHandler(e._id)}
+                  className="px-3 py-1 bg-red-500 text-white rounded"
+                >
                   <MdDelete />
                 </button>
               </div>

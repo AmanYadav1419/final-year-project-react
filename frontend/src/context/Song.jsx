@@ -35,7 +35,7 @@ export const SongProvider = ({ children }) => {
   async function addAlbum(formData, setTitle, setDescription, setFile) {
     setLoading(true);
     try {
-      // to add a abum
+      // to add a album
       const { data } = await axios.post("/api/song/album/new", formData);
       // then send the success message in toastify ui ui format
       toast.success(data.message);
@@ -55,7 +55,70 @@ export const SongProvider = ({ children }) => {
     }
   }
 
-  //   to fetch all the albums
+  //  function to add songs
+  // and recieve all the new data geted from Admin.jsx
+  // to make all the states empty after album is get added
+  async function addSong(
+    formData,
+    setTitle,
+    setDescription,
+    setFile,
+    setSinger,
+    setAlbum
+  ) {
+    setLoading(true);
+    try {
+      // to add a song
+      const { data } = await axios.post("/api/song/new", formData);
+      // then send the success message in toastify ui ui format
+      toast.success(data.message);
+      setLoading(false);
+      // call the fetch songs function
+      fetchSongs();
+
+      // empty all the recived states after fetching all songs,
+      // after successfully executing the function
+      setTitle("");
+      setDescription("");
+      setFile(null);
+      setAlbum("");
+      setSinger("");
+    } catch (error) {
+      // show the error in toastify ui format
+      toast.error(error.response.data.message);
+      setLoading(false);
+    }
+  }
+
+  // function to add thumbnail
+  // and recieve all the new data geted from Admin.jsx
+  // to make all the states empty after album is get added
+  async function addThumbnail(
+    // recive a song id for identify the correct song
+    id,
+    formData,
+    setFile
+  ) {
+    setLoading(true);
+    try {
+      // to add a song thumbnail
+      const { data } = await axios.post("/api/song/" + id, formData);
+      // then send the success message in toastify ui ui format
+      toast.success(data.message);
+      setLoading(false);
+      // call the fetch songs function
+      fetchSongs();
+
+      // at the end make the state variable to default previous state
+      setFile(null);
+    } catch (error) {
+      // show the error in toastify ui format
+      toast.error(error.response.data.message);
+      setLoading(false);
+    }
+  }
+
+  // to fetch all the albums
   async function fetchAlbums() {
     try {
       // to fetch the albums
@@ -65,6 +128,23 @@ export const SongProvider = ({ children }) => {
       setAlbums(data);
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  // function to delete song
+  async function deleteSong(id) {
+    try {
+      // get the correct song to delete the song
+      const { data } = await axios.delete("/api/song" + id);
+
+      // after that return toast sucess message
+      toast.success(data.message);
+
+      // after deleting the songs execute the fetch function
+      fetchSongs();
+    } catch (error) {
+      // after catching error return the toasr message as error
+      toast.error(error.response.data.message);
     }
   }
 
@@ -80,7 +160,16 @@ export const SongProvider = ({ children }) => {
 
   return (
     <SongContext.Provider
-      value={{ songs, addAlbum, loading, songloading, albums }}
+      value={{
+        songs,
+        addAlbum,
+        loading,
+        songloading,
+        albums,
+        addSong,
+        addThumbnail,
+        deleteSong,
+      }}
     >
       {children}
     </SongContext.Provider>
