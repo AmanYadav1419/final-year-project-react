@@ -9,7 +9,7 @@ const Admin = () => {
   const { user } = UserData();
 
   // to get the respected data from Song.jsx
-  const { albums, songs, addAlbum, loading } = SongData();
+  const { albums, songs, addAlbum, loading, addSong } = SongData();
 
   // created a navigate function to navigate from one route to another route
   const navigate = useNavigate();
@@ -51,6 +51,25 @@ const Admin = () => {
 
     // call the add album function, and send formData to function with that all state functions
     addAlbum(formData, setTitle, setDescription, setFile);
+  };
+
+  // on submit of form handler for song
+  const addSongHandler = (e) => {
+    // firstly prevent the default behavoiur of form i.e page reload
+    e.preventDefault();
+
+    // get the form data
+    const formData = new FormData();
+
+    // append all data
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("singer", singer);
+    formData.append("album", album);
+    formData.append("file", file);
+
+    // call the add Song function, and send formData to function with that all state functions
+    addSong(formData, setTitle, setDescription, setFile, setSinger, setAlbum);
   };
   return (
     <div className="min-h-screen bg-[#212121] text-white p-8">
@@ -122,7 +141,11 @@ const Admin = () => {
       {/* to add song  */}
       <h2 className="text-2xl font-bold mb-6 mt-6">Add Song</h2>
 
-      <form className="bg-[#181818] p-6 rounded-lg shadow-lg">
+      <form
+        // added on submit handler
+        onSubmit={addSongHandler}
+        className="bg-[#181818] p-6 rounded-lg shadow-lg"
+      >
         {/* for title */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1">Title</label>

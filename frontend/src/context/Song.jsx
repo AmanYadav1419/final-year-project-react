@@ -35,7 +35,7 @@ export const SongProvider = ({ children }) => {
   async function addAlbum(formData, setTitle, setDescription, setFile) {
     setLoading(true);
     try {
-      // to add a abum
+      // to add a album
       const { data } = await axios.post("/api/song/album/new", formData);
       // then send the success message in toastify ui ui format
       toast.success(data.message);
@@ -48,6 +48,41 @@ export const SongProvider = ({ children }) => {
       setTitle("");
       setDescription("");
       setFile(null);
+    } catch (error) {
+      // show the error in toastify ui format
+      toast.error(error.response.data.message);
+      setLoading(false);
+    }
+  }
+
+  //  function to add songs
+  // and recieve all the new data geted from Admin.jsx
+  // to make all the states empty after album is get added
+  async function addSong(
+    formData,
+    setTitle,
+    setDescription,
+    setFile,
+    setSinger,
+    setAlbum
+  ) {
+    setLoading(true);
+    try {
+      // to add a song
+      const { data } = await axios.post("/api/song/new", formData);
+      // then send the success message in toastify ui ui format
+      toast.success(data.message);
+      setLoading(false);
+      // call the fetch album function
+      fetchAlbums();
+
+      // empty all the recived states after fetching all albums,
+      // after successfully executing the function
+      setTitle("");
+      setDescription("");
+      setFile(null);
+      setAlbum("");
+      setSinger("");
     } catch (error) {
       // show the error in toastify ui format
       toast.error(error.response.data.message);
@@ -80,7 +115,7 @@ export const SongProvider = ({ children }) => {
 
   return (
     <SongContext.Provider
-      value={{ songs, addAlbum, loading, songloading, albums }}
+      value={{ songs, addAlbum, loading, songloading, albums, addSong }}
     >
       {children}
     </SongContext.Provider>
