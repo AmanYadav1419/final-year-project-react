@@ -9,7 +9,8 @@ const Admin = () => {
   const { user } = UserData();
 
   // to get the respected data from Song.jsx
-  const { albums, songs, addAlbum, loading, addSong } = SongData();
+  const { albums, songs, addAlbum, loading, addSong, addThumbnail } =
+    SongData();
 
   // created a navigate function to navigate from one route to another route
   const navigate = useNavigate();
@@ -71,6 +72,19 @@ const Admin = () => {
     // call the add Song function, and send formData to function with that all state functions
     addSong(formData, setTitle, setDescription, setFile, setSinger, setAlbum);
   };
+
+  // on submit of form handler for song thumbnail
+  const addThumbnailHandler = (id) => {
+    // get the form data
+    const formData = new FormData();
+
+    // append all the data
+    formData.append("file", file);
+
+    // call the add Song thumbnail function, and send formData to function with that all state functions
+    addThumbnail(id, formData, setFile);
+  };
+
   return (
     <div className="min-h-screen bg-[#212121] text-white p-8">
       {/* redirect or send to home page */}
@@ -263,7 +277,12 @@ const Admin = () => {
                       // added onchnage event file handler
                       onChange={fileChangeHandler}
                     />
-                    <button className="bg-green-500 text-white px-2 py-1 rounded">
+                    <button
+                      // add on click submit handler for adding thumbnail
+                      // _id is the song id
+                      onClick={() => addThumbnail(e._id)}
+                      className="bg-green-500 text-white px-2 py-1 rounded"
+                    >
                       Add Thumbnail
                     </button>
                   </div>
