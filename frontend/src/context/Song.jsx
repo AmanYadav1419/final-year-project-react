@@ -118,7 +118,7 @@ export const SongProvider = ({ children }) => {
     }
   }
 
-  //   to fetch all the albums
+  // to fetch all the albums
   async function fetchAlbums() {
     try {
       // to fetch the albums
@@ -128,6 +128,23 @@ export const SongProvider = ({ children }) => {
       setAlbums(data);
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  // function to delete song
+  async function deleteSong(id) {
+    try {
+      // get the correct song to delete the song
+      const { data } = await axios.delete("/api/song" + id);
+
+      // after that return toast sucess message
+      toast.success(data.message);
+
+      // after deleting the songs execute the fetch function
+      fetchSongs();
+    } catch (error) {
+      // after catching error return the toasr message as error
+      toast.error(error.response.data.message);
     }
   }
 
@@ -151,6 +168,7 @@ export const SongProvider = ({ children }) => {
         albums,
         addSong,
         addThumbnail,
+        deleteSong,
       }}
     >
       {children}

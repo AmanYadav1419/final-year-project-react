@@ -162,7 +162,7 @@ export const deleteSong = TryCatch(async (req, res) => {
   const song = await Song.findById(req.params.id);
 
   // delete the song
-  song.deleteOne();
+  await song.deleteOne();
 
   // then send the response od delete song
   res.json({

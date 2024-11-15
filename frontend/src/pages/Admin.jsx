@@ -9,8 +9,15 @@ const Admin = () => {
   const { user } = UserData();
 
   // to get the respected data from Song.jsx
-  const { albums, songs, addAlbum, loading, addSong, addThumbnail } =
-    SongData();
+  const {
+    albums,
+    songs,
+    addAlbum,
+    loading,
+    addSong,
+    addThumbnail,
+    deleteSong,
+  } = SongData();
 
   // created a navigate function to navigate from one route to another route
   const navigate = useNavigate();
@@ -83,6 +90,15 @@ const Admin = () => {
 
     // call the add Song thumbnail function, and send formData to function with that all state functions
     addThumbnail(id, formData, setFile);
+  };
+
+  // on submit of form handler delete handler work
+  const deleteHandler = (id) => {
+    // first give the confirm message modal popup
+    // if it is true then only deletes the song by id
+    if (confirm("are you sure you want to delete this song")) {
+      deleteSong(id);
+    }
   };
 
   return (
@@ -298,7 +314,12 @@ const Admin = () => {
                 <h4 className="text-sm text-gray-500">{e.description}</h4>
 
                 {/* btn for delete */}
-                <button className="px-3 py-1 bg-red-500 text-white rounded">
+                <button
+                  // delete song handler
+                  // _id is the song id
+                  onClick={() => deleteHandler(e._id)}
+                  className="px-3 py-1 bg-red-500 text-white rounded"
+                >
                   <MdDelete />
                 </button>
               </div>
