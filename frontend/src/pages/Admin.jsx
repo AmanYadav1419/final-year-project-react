@@ -163,8 +163,14 @@ const Admin = () => {
         </div>
 
         {/* button to add album */}
-        <button className="auth-btn" style={{ width: "100px" }}>
-          Add
+        <button
+          // until loading is there for adding album disabled the button
+          disabled={loading}
+          className="auth-btn"
+          style={{ width: "100px" }}
+        >
+          {/* based on condition change the button text */}
+          {loading ? "Please Wait!" : "Add"}
         </button>
       </form>
 
