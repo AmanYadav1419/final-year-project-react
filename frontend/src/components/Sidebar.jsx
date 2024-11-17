@@ -16,6 +16,8 @@ const Sidebar = () => {
           <img src={assets.home_icon} className="w-6" alt="" />
           <p className="font-bold">Home</p>
         </div>
+
+        {/* Search icon */}
         <div
           className="flex items-center gap-3 pl-8 cursor-pointer"
           // on click of on this navigate to search route
@@ -24,6 +26,24 @@ const Sidebar = () => {
           {/* uncomment below line when assets folder is present */}
           <img src={assets.search_icon} className="w-6" alt="" />
           <p className="font-bold">Search</p>
+        </div>
+      </div>
+
+      <div className="bg-[#121212] h-[85%] rounded">
+        <div className="p-4 flex items-center justify-between">
+          {/* Your Library icon */}
+          <div className="flex items-center gap-3">
+            {/* uncomment below line when assets folder is present */}
+            <img src={assets.stack_icon} className="w-8" alt="" />
+            <p className="font-semibold">Your Library</p>
+          </div>
+          
+          {/* Your Library icon */}
+          <div className="flex items-center gap-3">
+            {/* uncomment below line when assets folder is present */}
+            <img src={assets.arrow_icon} className="w-8" alt="" />
+            <img src={assets.plus_icon} className="w-8" alt="" />
+          </div>
         </div>
       </div>
     </div>
