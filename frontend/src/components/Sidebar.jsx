@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import PlayListCard from "./PlayListCard";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -44,6 +45,9 @@ const Sidebar = () => {
             <img src={assets.arrow_icon} className="w-8" alt="" />
             <img src={assets.plus_icon} className="w-8" alt="" />
           </div>
+        </div>
+        <div onClick={()=> navigate("/playlist")}>
+          <PlayListCard />
         </div>
       </div>
     </div>
