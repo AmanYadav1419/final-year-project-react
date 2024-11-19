@@ -86,7 +86,6 @@ export const UserProvider = ({ children }) => {
     }
   }
 
-
   // function to fetch the user
   async function fetchUser() {
     try {
@@ -112,13 +111,38 @@ export const UserProvider = ({ children }) => {
     }
   }
 
+  // logout user function
+  async function logoutUser() {
+    // try catch block
+    try {
+      // get the data from the route
+      const { data } = await axios.get("/api/user/logout");
+
+      // then reload the page
+      // to remove the user data
+      window.location.reload();
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  }
+
   // to fetch the user on side effect, or on loading the page
   useEffect(() => {
     fetchUser();
   }, []);
   return (
     // value is for providing all the data which will be passed through globally
-    <UserContext.Provider value={{ registerUser, user, isAuth, btnLoading, loading, loginUser }}>
+    <UserContext.Provider
+      value={{
+        registerUser,
+        user,
+        isAuth,
+        btnLoading,
+        loading,
+        loginUser,
+        logoutUser,
+      }}
+    >
       {children}
       <Toaster />
     </UserContext.Provider>
