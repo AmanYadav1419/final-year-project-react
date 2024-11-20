@@ -21,7 +21,14 @@ const Home = () => {
           {albums &&
             albums.map((e, i) => (
               // render or display the albumItem for each album
-              <AlbumItem key={i} />
+              <AlbumItem
+                key={i}
+                // send all respective the data to the AlbumItem component
+                image={e.thumbnail.url}
+                name={e.title}
+                desc={e.description}
+                id={e._id}
+              />
             ))}
         </div>
       </div>
