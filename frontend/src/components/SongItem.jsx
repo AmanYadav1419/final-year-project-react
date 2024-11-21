@@ -1,8 +1,37 @@
-import React from "react";
-import { FaBookmark, FaPlay } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { FaBookmark, FaPlay, FaRegBookmark } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { UserData } from "../context/User";
 
 const SongItem = ({ image, name, desc, id }) => {
+  // declare the state for the save or not
+  const [saved, setSaved] = useState(false);
+
+  // import necesary data from User Context
+  const { addToPlaylist, user } = UserData();
+
+  // save the user playlist for further future checking of playist
+  const playlist = user.playlist;
+
+  useEffect(() => {
+    // if playlist id is included
+    // that means song is present in playlist
+    if (playlist && playlist.includes(id)) {
+      setSaved(true);
+    }
+    // it always get call when user data or ativity is changed
+  }, [user]);
+
+  // create the saved handler to save and unsaved song in playlist
+  const savedtoPlaylistHandler = () => {
+    // set to opposite of saved
+    // so that onclick it will work both saved and unsaved
+    setSaved(!saved);
+
+    // then call the function and send the id of song
+    addToPlaylist(id);
+  };
+
   // navigate function to navigate through different routes
   const navigate = useNavigate();
   return (
@@ -23,11 +52,14 @@ const SongItem = ({ image, name, desc, id }) => {
 
         {/* this is button of bookmark icon or save */}
         <button
+          // onclick on the btn handler function will work
+          onClick={savedtoPlaylistHandler}
           className="absolute bottom-2 right-2 bg-green-500
         text-black p-3 rounded-full opacity-0 group-hover:opacity-100 
         transition-opacity duration-300"
         >
-          <FaBookmark />
+          {/* then conditional rendering of icons based on saved or unsaved */}
+          {saved ? <FaBookmark /> : <FaRegBookmark />}
         </button>
       </div>
 

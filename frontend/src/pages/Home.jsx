@@ -8,8 +8,6 @@ const Home = () => {
   // import necesary data from Song Context
   const { songs, albums } = SongData();
 
-  // const navigate =
-
   return (
     // wrap home page with layout
     <Layout>
@@ -35,10 +33,8 @@ const Home = () => {
       </div>
 
       <div className="mb-4">
-        <h1 className="my-5 font-bold text-2xl">
-          Today's Biggest Hits.!
-        </h1>
-        
+        <h1 className="my-5 font-bold text-2xl">Today's Biggest Hits.!</h1>
+
         {/* this div to map all the songs  */}
         {/* then show the data or songs */}
         {/* overflow auto means only scrollable to x-direction */}

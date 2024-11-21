@@ -126,6 +126,22 @@ export const UserProvider = ({ children }) => {
     }
   }
 
+  // to add the song to playlist
+  async function addToPlaylist(id) {
+    try {
+      // first get the song
+      const { data } = await axios.post("/api/user/song" + id);
+
+      // succes message in toastify format
+      toast.success(data.message);
+
+      // then call the fetchUser to upadte the user
+      fetchUser();
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  }
+
   // to fetch the user on side effect, or on loading the page
   useEffect(() => {
     fetchUser();
@@ -141,6 +157,7 @@ export const UserProvider = ({ children }) => {
         loading,
         loginUser,
         logoutUser,
+        addToPlaylist
       }}
     >
       {children}
