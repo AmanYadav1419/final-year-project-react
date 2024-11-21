@@ -6,6 +6,7 @@ import {
   logoutUser,
   myProfile,
   registerUser,
+  saveToPlaylist,
 } from "../controllers/userControllers.js";
 import { isAuth } from "../middlewares/isAuth.js";
 
@@ -23,6 +24,9 @@ router.get("/me", isAuth, myProfile);
 
 // Auth route to check that user is authenticated and then logout route
 router.get("/logout", isAuth, logoutUser);
+
+// Auth route to check that user is authenticated and then savedToPlaylist route
+router.post("/song/:id", isAuth, saveToPlaylist);
 
 // export the router
 export default router;

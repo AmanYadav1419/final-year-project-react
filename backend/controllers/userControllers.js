@@ -103,8 +103,44 @@ export const logoutUser = TryCatch(async (req, res) => {
   // make the token to empty , & maxAge is 0 , it instatly removes
   res.cookie("token", "", { maxAge: 0 });
 
-  // return the message of logged out 
+  // return the message of logged out
   res.json({
     message: "Logged Out Successfully",
+  });
+});
+
+// to save the song in playlist
+export const saveToPlaylist = TryCatch(async (req, res) => {
+  // first find the user
+  const user = await User.findById(req.user._id);
+
+  // if we got the user then find the user playlists array
+  // if the requested id is present
+  if (user.playlist.includes(req.params.id)) {
+    // then remove the song from playlist
+    // for that find the index of song
+    const index = user.playlist.indexOf(req.params.id);
+
+    // then simply remove the song by using splice
+    user.playlist.splice(index, 1);
+
+    // then at the end save the user
+    await user.save();
+
+    // then send the response message of playlist removed succesfully
+    return res.json({
+      message: "Song Removed from Playlist",
+    });
+  }
+
+  // if the song is not in playlist, then simply push the song to array
+  user.playlist.push(req.params.id);
+
+  // then at the end save the user
+  await user.save();
+
+  // then send the response message of playlist added succesfully
+  return res.json({
+    message: "Song Added to Playlist",
   });
 });
