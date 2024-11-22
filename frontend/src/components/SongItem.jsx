@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaBookmark, FaPlay, FaRegBookmark } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { UserData } from "../context/User";
+import { SongData } from "../context/Song";
 
 const SongItem = ({ image, name, desc, id }) => {
   // declare the state for the save or not
@@ -9,6 +10,9 @@ const SongItem = ({ image, name, desc, id }) => {
 
   // import necesary data from User Context
   const { addToPlaylist, user } = UserData();
+
+  // import necesary data from Song Context
+  const { setSelectedSong, isPlaying, setIsPlaying } = SongData();
 
   // save the user playlist for further future checking of playist
   const playlist = user.playlist;
@@ -46,6 +50,14 @@ const SongItem = ({ image, name, desc, id }) => {
           className="absolute bottom-2 right-14 bg-green-500
         text-black p-3 rounded-full opacity-0 group-hover:opacity-100 
         transition-opacity duration-300"
+
+        // onclick event 
+        onClick={()=> {
+          // set the song which get from id
+          setSelectedSong(id);
+          // set is song playing true
+          setIsPlaying(true)
+        }}
         >
           <FaPlay />
         </button>

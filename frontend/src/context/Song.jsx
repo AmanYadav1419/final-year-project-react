@@ -9,12 +9,18 @@ const SongContext = createContext();
 export const SongProvider = ({ children }) => {
   // after fetching all store it in
   const [songs, setSongs] = useState([]);
-  // when fetched the songs the loading bar we can sho for that this is state
+  // when fetched the songs the loading bar we can show for that this is state
   const [songloading, setSongLoading] = useState(true);
   // for button loading
   const [loading, setLoading] = useState(false);
   // to store the albums
   const [albums, setAlbums] = useState([]);
+
+  // to get a single song and then store it in state
+  const [selectedSong, setSelectedSong] = useState(null);
+
+  // this state for music is playing or not
+  const [isPlaying, setIsPlaying] = useState(false);
 
   // to fetch all the songs
   async function fetchSongs() {
@@ -24,8 +30,30 @@ export const SongProvider = ({ children }) => {
 
       // send the songs data value to the song state
       setSongs(data);
+
+      // after fetching and seting the song data,
+      // then the first song of fetched song should be played and visible
+      // data[0]._id i.e from data first song
+      setSelectedSong(data[0]._id);
+      setIsPlaying(false);
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  // to store the fethced songs
+  const [song, setSong] = useState([]);
+
+  // function to get the selected song
+  async function fetchSong() {
+    try {
+      // get the song from the route
+      const { data } = await axios.get("/api/song/" + selectedSong);
+
+      // set the songData to data
+      setSong(data);
+    } catch (error) {
+      toast.error(error);
     }
   }
 
@@ -169,6 +197,11 @@ export const SongProvider = ({ children }) => {
         addSong,
         addThumbnail,
         deleteSong,
+        fetchSong,
+        song,
+        setSelectedSong,
+        isPlaying,
+        setIsPlaying,
       }}
     >
       {children}
