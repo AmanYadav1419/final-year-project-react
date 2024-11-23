@@ -169,3 +169,12 @@ export const deleteSong = TryCatch(async (req, res) => {
     message: "Song Deleted Successfully",
   });
 });
+
+// to get a single song to play
+export const getSingleSong = TryCatch(async (req, res) => {
+  // first find the song by id
+  const song = await Song.findById(req.params.id);
+
+  // then send the song as response
+  res.json(song);
+});

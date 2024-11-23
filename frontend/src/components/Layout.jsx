@@ -4,6 +4,7 @@
 import React from "react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
+import Player from "./Player";
 
 const Layout = ({ children }) => {
   return (
@@ -11,14 +12,16 @@ const Layout = ({ children }) => {
       <div className="h-[90%] flex">
         {/* import / show the sidebar */}
         <Sidebar />
+        {/* bg can be tryed #212121 */}
+        <div className="w-[100%] m-2 px-6 pt-4 rounded bg-[#121212] text-white overflow-auto lg:w-[75%] lg:ml-0">
+          {/* import / show the navbar */}
+          <Navbar />
+          {/* recieve the children prop which we will wrap the layout file */}
+          {children}
+        </div>
       </div>
-      {/* bg can be tryed #212121 */}
-      <div className="w-[100%] m-2 px-6 pt-4 rounded bg-[#121212] text-white overflow-auto lg:w-[75%] lg:ml-0">
-        {/* import / show the navbar */}
-        <Navbar />
-        {/* recieve the children prop which we will wrap the layout file */}
-        {children}
-      </div>
+      {/* added player component to layout */}
+      <Player />
     </div>
   );
 };
