@@ -45,10 +45,10 @@ export const SongProvider = ({ children }) => {
   const [song, setSong] = useState([]);
 
   // function to get the selected song
-  async function fetchSong() {
+  async function fetchSingleSong() {
     try {
       // get the song from the route
-      const { data } = await axios.get("/api/song/" + selectedSong);
+      const { data } = await axios.get("/api/song/single" + selectedSong);
 
       // set the songData to data
       setSong(data);
@@ -197,11 +197,12 @@ export const SongProvider = ({ children }) => {
         addSong,
         addThumbnail,
         deleteSong,
-        fetchSong,
+        fetchSingleSong,
         song,
         setSelectedSong,
         isPlaying,
         setIsPlaying,
+        selectedSong
       }}
     >
       {children}

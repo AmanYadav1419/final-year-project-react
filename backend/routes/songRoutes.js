@@ -33,7 +33,7 @@ router.get("/album/:id", isAuth, getAllSongsByAlbum);
 router.delete("/:id", isAuth, deleteSong);
 
 // to get the single song below is the route
-router.get("/:id", isAuth, getSingleSong)
+router.get("/single/:id", isAuth, getSingleSong)
 
 // exporting the router
 export default router;
