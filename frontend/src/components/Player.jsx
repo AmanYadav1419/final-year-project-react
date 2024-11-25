@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SongData } from "../context/Song";
 import { GrChapterNext, GrChapterPrevious } from "react-icons/gr";
 import { FaPause, FaPlay } from "react-icons/fa";
@@ -30,6 +30,61 @@ const Player = () => {
     // and at last setIsPlaying state is opposite of it state
     setIsPlaying(!isPlaying);
   };
+
+  // state for progress of song or range slider
+  const [progress, setProgress] = useState(0);
+  // state for song duration
+  const [duration, setDuration] = useState(0);
+
+  // use Effect for matching range slider with audio duration or timestamp
+  useEffect(() => {
+    // first get the audio from audio ref
+    const audio = auidoRef.current;
+
+    // if audio not found then return back
+    if (!audio) {
+      return;
+    }
+
+    // handler for duration update
+    const handleLoadedMetaData = () => {
+      setDuration(audio.duration);
+    };
+
+    // handle for time update
+    const handleTimeUpdate = () => {
+      setProgress(audio.currentTime);
+    };
+
+    // add event listener for metadata with provided function as well
+    audio.addEventListener("loadedmetadata", handleLoadedMetaData);
+
+    // add event listener for metadata with provided function as well
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+
+    // return cleanup function
+    return () => {
+      // remove all the event listener
+      // remove event listener for metadata with provided function as well
+      audio.removeEventListener("loadedmetadata", handleLoadedMetaData);
+
+      // remove event listener for metadata with provided function as well
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+    };
+    // it everytime call or render when changes are in song
+  }, [song]);
+
+  // function handler for progress change
+  const handleProgressChange = (e) => {
+    // save the targetd value into duration to newTime
+    const newTime = (e.target.value / 100) * duration;
+    // then store the newTime in audioRef for further use too
+    auidoRef.current.currentTime = newTime;
+
+    // store the newTime to progress state
+    setProgress(newTime);
+  };
+
   return (
     <div>
       {
@@ -101,6 +156,10 @@ const Player = () => {
                   min={"0"}
                   max={"100"}
                   className="progress-bar w-[120px] md:-[300px]"
+                  // in value pass for range input for song
+                  value={(progress / duration) * 100}
+                  // onchange event handler i.e for progress change
+                  onChange={handleProgressChange}
                 />
               </div>
 
