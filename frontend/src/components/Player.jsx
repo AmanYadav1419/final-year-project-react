@@ -4,8 +4,15 @@ import { GrChapterNext, GrChapterPrevious } from "react-icons/gr";
 import { FaPause, FaPlay } from "react-icons/fa";
 const Player = () => {
   // import all essential data from Song Context
-  const { song, fetchSingleSong, selectedSong, isPlaying, setIsPlaying } =
-    SongData();
+  const {
+    song,
+    fetchSingleSong,
+    selectedSong,
+    isPlaying,
+    setIsPlaying,
+    nextMusic,
+    prevMusic,
+  } = SongData();
   // console.log(song);
 
   // every time song changes the fetchSong function will executes
@@ -181,7 +188,11 @@ const Player = () => {
 
               {/* div for next and previous icons and play pause btn */}
               <div className="flex justify-center items-center gap-4">
-                <span className="cursor-pointer">
+                <span className="cursor-pointer" 
+                // onclick previous music function handler
+                // to play the previous music
+                onClick={prevMusic}
+                >
                   {/* icon for previous */}
                   <GrChapterPrevious />
                 </span>
@@ -199,7 +210,11 @@ const Player = () => {
                   {isPlaying ? <FaPause /> : <FaPlay />}
                 </button>
 
-                <span className="cursor-pointer">
+                <span className="cursor-pointer"
+                // onclick next music function handler
+                // to play the next music
+                onClick={nextMusic}
+                >
                   {/* icon for next */}
                   <GrChapterNext />
                 </span>
