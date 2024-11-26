@@ -4,8 +4,15 @@ import { GrChapterNext, GrChapterPrevious } from "react-icons/gr";
 import { FaPause, FaPlay } from "react-icons/fa";
 const Player = () => {
   // import all essential data from Song Context
-  const { song, fetchSingleSong, selectedSong, isPlaying, setIsPlaying } =
-    SongData();
+  const {
+    song,
+    fetchSingleSong,
+    selectedSong,
+    isPlaying,
+    setIsPlaying,
+    nextMusic,
+    prevMusic,
+  } = SongData();
   // console.log(song);
 
   // every time song changes the fetchSong function will executes
@@ -29,6 +36,22 @@ const Player = () => {
 
     // and at last setIsPlaying state is opposite of it state
     setIsPlaying(!isPlaying);
+  };
+
+  // state variable for volume initially it is 1
+  // i.e it is start on full volume
+  const [volume, setVolume] = useState(1);
+
+  // function to handle volume change
+  const handleVolumeChange = (e) => {
+    // get the volume status from e.target.value
+    const newVolume = e.target.value;
+    // save the user geted to value to state
+    setVolume(newVolume);
+
+    // use the user geted value in audioRef volume ,
+    // update with the newVolume
+    auidoRef.current.volume = newVolume;
   };
 
   // state for progress of song or range slider
@@ -165,7 +188,11 @@ const Player = () => {
 
               {/* div for next and previous icons and play pause btn */}
               <div className="flex justify-center items-center gap-4">
-                <span className="cursor-pointer">
+                <span className="cursor-pointer" 
+                // onclick previous music function handler
+                // to play the previous music
+                onClick={prevMusic}
+                >
                   {/* icon for previous */}
                   <GrChapterPrevious />
                 </span>
@@ -183,11 +210,31 @@ const Player = () => {
                   {isPlaying ? <FaPause /> : <FaPlay />}
                 </button>
 
-                <span className="cursor-pointer">
+                <span className="cursor-pointer"
+                // onclick next music function handler
+                // to play the next music
+                onClick={nextMusic}
+                >
                   {/* icon for next */}
                   <GrChapterNext />
                 </span>
               </div>
+            </div>
+
+            {/* for volume slider */}
+            <div className="flex items-center">
+              <input
+                type="range"
+                className="w-16 md:w-32"
+                min={"0"}
+                max={"1"}
+                // in which steps it should be increase
+                steps={"0.01"}
+                // value is given as volume
+                value={volume}
+                // on change handler for volume change
+                onChange={handleVolumeChange}
+              />
             </div>
           </div>
         )

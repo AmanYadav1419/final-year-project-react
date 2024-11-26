@@ -186,6 +186,48 @@ export const SongProvider = ({ children }) => {
     fetchAlbums();
   }, []);
 
+  // to get and store the song index, with initially 0
+  // i.e the first song will show
+  const [index, setIndex] = useState(0);
+
+  // function for next music controlls
+  function nextMusic() {
+    // first check the condition
+    if (index === songs.length - 1) {
+      // then set the index to 0
+      setIndex(0);
+      // and the set the selected song with the help of songs id
+      setSelectedSong(songs[0]._id);
+    }
+    // else condition
+    else {
+      // else set index + 1
+      setIndex(index + 1);
+      // and set the selected song with the help of songs id
+      // with songs index + 1
+      setSelectedSong(songs[index + 1]._id);
+    }
+  }
+
+  // function for previous music controlls
+  function prevMusic() {
+    // first check the condition
+    if (index === 0) {
+      // simply return null, to return null
+      return null;
+      // and the set the selected song with the help of songs song.length
+      setSelectedSong(songs[song.length]._id);
+    }
+    // else condition
+    else {
+      // else set index - 1
+      setIndex(index - 1);
+      // and set the selected song with the help of songs id
+      // with songs index - 1
+      setSelectedSong(songs[index - 1]._id);
+    }
+  }
+
   return (
     <SongContext.Provider
       value={{
@@ -202,7 +244,9 @@ export const SongProvider = ({ children }) => {
         setSelectedSong,
         isPlaying,
         setIsPlaying,
-        selectedSong
+        selectedSong,
+        nextMusic,
+        prevMusic,
       }}
     >
       {children}
