@@ -31,6 +31,22 @@ const Player = () => {
     setIsPlaying(!isPlaying);
   };
 
+  // state variable for volume initially it is 1
+  // i.e it is start on full volume
+  const [volume, setVolume] = useState(1);
+
+  // function to handle volume change
+  const handleVolumeChange = (e) => {
+    // get the volume status from e.target.value
+    const newVolume = e.target.value;
+    // save the user geted to value to state
+    setVolume(newVolume);
+
+    // use the user geted value in audioRef volume ,
+    // update with the newVolume
+    auidoRef.current.volume = newVolume;
+  };
+
   // state for progress of song or range slider
   const [progress, setProgress] = useState(0);
   // state for song duration
@@ -188,6 +204,22 @@ const Player = () => {
                   <GrChapterNext />
                 </span>
               </div>
+            </div>
+
+            {/* for volume slider */}
+            <div className="flex items-center">
+              <input
+                type="range"
+                className="w-16 md:w-32"
+                min={"0"}
+                max={"1"}
+                // in which steps it should be increase
+                steps={"0.01"}
+                // value is given as volume
+                value={volume}
+                // on change handler for volume change
+                onChange={handleVolumeChange}
+              />
             </div>
           </div>
         )
