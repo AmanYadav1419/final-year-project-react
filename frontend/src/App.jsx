@@ -28,7 +28,8 @@ const App = () => {
             {/* if user is authenticatd then only go to Playlist page else go to login page */}
             <Route
               path="/playlist"
-              element={isAuth ? <PlayList /> : <Login />}
+              // send the prop user to playlist component
+              element={isAuth ? <PlayList user={user} /> : <Login />}
             />
 
             {/* if user is authenticatd then only go to Admin page else go to login page */}
