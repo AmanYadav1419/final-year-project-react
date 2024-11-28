@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { SongData } from "../context/Song";
 import { FaBookmark, FaPlay } from "react-icons/fa";
+import { UserData } from "../context/User";
 
 const PlayList = ({ user }) => {
   // import all the neccessary data from Song context
-  const { songs } = SongData();
+  const { songs, setSelectedSong, setIsPlaying } = SongData();
+
+  // import all the neccessarry data from User context
+  const { addToPlaylist } = UserData();
 
   // state for myplaylist initilise with empty array
   const [myPlaylist, setMyPlaylist] = useState([]);
@@ -23,6 +27,23 @@ const PlayList = ({ user }) => {
     }
     // when change in songs or in user then re excutes
   }, [songs, user]);
+
+  // on click handler for selected song and set playing,
+  // to play/pause the song
+  const onClickHandler = (id) => {
+    // set song via its id to the selected song
+    setSelectedSong(id);
+
+    // and make the set is playing to start the song playing
+    setIsPlaying(true);
+  };
+
+  // on click handler for saving/remoing the song to playlist
+  const savePlayListHandler = (id) => {
+    // send the id value to the context function
+    addToPlaylist(id);
+  };
+
   return (
     <Layout>
       <div className="mt-10 flex gap-8 flex-col md:flex-row md:items-center">
@@ -106,12 +127,23 @@ const PlayList = ({ user }) => {
             </p>
             {/* to show the bookmark and play icons/buttons */}
             <p className="flex justify-center items-center gap-5">
-              <p className="text-[15px] text-center">
+              <p
+                className="text-[15px] text-center"
+                // on click handler for save song to playlist
+                // it will send the element id to the handler
+                // to set and save the corrected song
+                onClick={() => savePlayListHandler(e._id)}
+              >
                 {/* show the bookmark icon */}
                 <FaBookmark />
               </p>
-              
-              <p className="text-[15px] text-center">
+
+              <p
+                className="text-[15px] text-center"
+                // onclick handler and it will send the element id to the handler
+                // to set and played the corrected song
+                onClick={() => onClickHandler(e._id)}
+              >
                 {/* show the play icon */}
                 <FaPlay />
               </p>
