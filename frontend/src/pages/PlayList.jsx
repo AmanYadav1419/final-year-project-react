@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { SongData } from "../context/Song";
+import { FaBookmark, FaPlay } from "react-icons/fa";
 
 const PlayList = ({ user }) => {
   // import all the neccessary data from Song context
@@ -60,7 +61,10 @@ const PlayList = ({ user }) => {
       </div>
 
       {/* to show the playlist in table format */}
-      <div className="grid grid-cols-3 sm:grid-cols-4 mt-10 mb-4 pl-2 text-[#a7a7a7]">
+      <div
+        className="grid grid-cols-3 sm:grid-cols-4 
+      mt-10 mb-4 pl-2 text-[#a7a7a7]"
+      >
         <p>
           <b className="mr-4">#</b>
         </p>
@@ -73,6 +77,47 @@ const PlayList = ({ user }) => {
 
       {/* horizontal line */}
       <hr />
+
+      {/* if we had myplaylist then map the myplaylist */}
+      {myPlaylist &&
+        myPlaylist.map((e, i) => (
+          <div
+            className="grid grid-cols-3 sm:grid-cols-4 mt-10 mb-4 
+            pl-2 text-[#a7a7a7] hover:bg-[#ffffff2b] cursor-pointer"
+            // pass key as i i.e index
+            key={i}
+          >
+            <p className="text-white">
+              <b className="mr-4 text-[#a7a7a7]">
+                {/* i + 1 i.e means the first song */}
+                {i + 1}
+              </b>
+              {/* also add img as the thumbnail to show the song */}
+              <img src={e.thumbnail.url} className="inline w-10 mr-5" alt="" />
+              // to show the title of the song
+              {e.title}
+            </p>
+
+            {/* to show the singer name */}
+            <p className="text-[15px]">{e.singer}</p>
+            {/* to show the song description and only show the first 20 words */}
+            <p className="text-[15px] hidden sm:block">
+              {e.description.slice(0, 20)}...
+            </p>
+            {/* to show the bookmark and play icons/buttons */}
+            <p className="flex justify-center items-center gap-5">
+              <p className="text-[15px] text-center">
+                {/* show the bookmark icon */}
+                <FaBookmark />
+              </p>
+              
+              <p className="text-[15px] text-center">
+                {/* show the play icon */}
+                <FaPlay />
+              </p>
+            </p>
+          </div>
+        ))}
     </Layout>
   );
 };
