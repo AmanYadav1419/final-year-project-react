@@ -7,6 +7,7 @@ import { UserData } from "./context/User";
 import Loading from "./components/Loading";
 import Admin from "./pages/Admin";
 import PlayList from "./pages/PlayList";
+import Album from "./pages/Album";
 
 const App = () => {
   // import essential data from context
@@ -30,6 +31,13 @@ const App = () => {
               path="/playlist"
               // send the prop user to playlist component
               element={isAuth ? <PlayList user={user} /> : <Login />}
+            />
+
+            {/* if user is authenticatd then only go to Album page else go to login page */}
+            <Route
+              path="/album/:id"
+              // send the prop user to Album component
+              element={isAuth ? <Album user={user} /> : <Login />}
             />
 
             {/* if user is authenticatd then only go to Admin page else go to login page */}

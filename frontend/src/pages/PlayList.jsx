@@ -54,11 +54,19 @@ const PlayList = ({ user }) => {
           // if had then the first song of the playlist
           myPlaylist && myPlaylist[0] ? (
             // then show the first song thumbnail of playlist
-            <img src={myPlaylist[0].thumbnail.url} alt="" />
+            <img
+              src={myPlaylist[0].thumbnail.url}
+              className="w-48 rounded" 
+              alt=""
+            />
           ) : (
             // if we dont have any playlist or song and thumbnail
             // then show the dummy image
-            <img src="https://via.placeholder.com/250" alt="" />
+            <img
+              src="https://via.placeholder.com/250"
+              className="w-48 rounded"
+              alt=""
+            />
           )
         }
 
