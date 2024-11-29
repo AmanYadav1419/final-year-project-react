@@ -228,6 +228,28 @@ export const SongProvider = ({ children }) => {
     }
   }
 
+  // set the state for albumSong
+  const [albumSong, setAlbumSong] = useState([]);
+
+  // set the albumdata
+  const [albumData, setAlbumData] = useState([]);
+
+  // async function for fetch album song
+  async function fetchAlbumSong(id) {
+    try {
+      // get the required data
+      const { data } = await axios.get("/api/song/album/" + id);
+
+      // setting the data to albumSong
+      setAlbumSong(data.songs);
+
+      // setting the album data
+      setAlbumData(data.album);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <SongContext.Provider
       value={{
@@ -247,6 +269,9 @@ export const SongProvider = ({ children }) => {
         selectedSong,
         nextMusic,
         prevMusic,
+        fetchAlbumSong,
+        albumSong,
+        albumData
       }}
     >
       {children}
