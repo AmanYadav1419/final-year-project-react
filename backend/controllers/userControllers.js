@@ -1,33 +1,28 @@
-// in this file written user controllers
-
 import { User } from "../models/User.js";
-import generateToken from "../utils/generateToken.js";
 import TryCatch from "../utils/TryCatch.js";
 import bcrypt from "bcrypt";
+import generateToken from "../utils/generateToken.js";
 
 // async function of register user controller
-// TryCatch is basically a try catch block written in the file
-// for removing wrtting the same code again and again
-
+// TryCatch is basically a try-catch block written in the file
+// for removing writing the same code again and again
 export const registerUser = TryCatch(async (req, res) => {
-  // check first that if the any user is present or not
-  // via using email
+  // check first that if any user is present or not via using email
   // get all the info from user
   const { name, email, password } = req.body;
 
-  // find the user thorugh email as email is unique
+  // find the user through email as email is unique
   let user = await User.findOne({ email });
 
-  //  if user already exits then return this
+  // if user already exists then return this
   if (user)
-    return res.staus(400).json({
+    return res.status(400).json({
       message: "User Already Exists",
     });
 
-  // if user not already exists that means we need to create user
+  // if user not already exists, that means we need to create the user
   // then we firstly hash the password
   const hashPassword = await bcrypt.hash(password, 10);
-  // const hashPassword = await bcrypt.hash(password, 10);
 
   // new User creation
   user = await User.create({
@@ -37,70 +32,67 @@ export const registerUser = TryCatch(async (req, res) => {
     password: hashPassword,
   });
 
-  // created the token / cookie
+  // created the token/cookie
   generateToken(user._id, res);
 
-  // at last return the status and sucess message
-  // of user registerd sucessfully
-  res.staus(201).json({
+  // at last, return the status and success message
+  // of user registered successfully
+  res.status(201).json({
     user,
-    message: "User Registerd Sucessfully",
+    message: "User Registered",
   });
 });
 
-// video start from 39:30
-
-// login of already existed user
+// login of an already existing user
 export const loginUser = TryCatch(async (req, res) => {
-  // check first that if the any user is present or not
-  // via using email
+  // check first that if any user is present or not via using email
   // get all the info from user
   const { email, password } = req.body;
 
-  // find the user thorugh email as email is unique
+  // find the user through email as email is unique
   const user = await User.findOne({ email });
 
   // if user not found then show the message
   if (!user)
-    return res.staus(400).json({
-      message: "No User Exists",
+    return res.status(400).json({
+      message: "No User Exist",
     });
 
-  // if user exits then check the password
+  // if user exists then check the password
   // compare the user password with the typed one to correctly identify the user
   // compare the password which receives from body and compare with user.password
   const comparePassword = await bcrypt.compare(password, user.password);
 
-  // if comapre password is not equal to password, that mean wrong password
+  // if compare password is not equal to password, that means wrong password
   if (!comparePassword)
     return res.status(400).json({
       // we write credentials
-      message: "Wrong Credentials",
+      message: "Wrong Password",
     });
 
-  // created the token / cookie
+  // created the token/cookie
   generateToken(user._id, res);
 
-  // at last return the status and sucess message
-  // of user registerd sucessfully
-  res.staus(200).json({
+  // at last, return the status and success message
+  // of user logged in successfully
+  res.status(200).json({
     user,
-    message: "User LoggedIn Sucessfully",
+    message: "User Logged In",
   });
 });
 
 // to fetch the user profile and details
 export const myProfile = TryCatch(async (req, res) => {
-  // find the user by the req id which get from the isAuth middleware
+  // find the user by the req id which gets from the isAuth middleware
   const user = await User.findById(req.user._id);
 
   // send the res of user
   res.json(user);
 });
 
-// to Logout the user
+// to logout the user
 export const logoutUser = TryCatch(async (req, res) => {
-  // make the token to empty , & maxAge is 0 , it instatly removes
+  // make the token empty & maxAge is 0, it instantly removes
   res.cookie("token", "", { maxAge: 0 });
 
   // return the message of logged out
@@ -114,33 +106,33 @@ export const saveToPlaylist = TryCatch(async (req, res) => {
   // first find the user
   const user = await User.findById(req.user._id);
 
-  // if we got the user then find the user playlists array
+  // if we got the user, then find the user playlists array
   // if the requested id is present
   if (user.playlist.includes(req.params.id)) {
     // then remove the song from playlist
-    // for that find the index of song
+    // for that, find the index of song
     const index = user.playlist.indexOf(req.params.id);
 
     // then simply remove the song by using splice
     user.playlist.splice(index, 1);
 
-    // then at the end save the user
+    // then at the end, save the user
     await user.save();
 
-    // then send the response message of playlist removed succesfully
+    // then send the response message of playlist removed successfully
     return res.json({
-      message: "Song Removed from Playlist",
+      message: "Removed from playlist",
     });
   }
 
-  // if the song is not in playlist, then simply push the song to array
+  // if the song is not in the playlist, then simply push the song to array
   user.playlist.push(req.params.id);
 
-  // then at the end save the user
+  // then at the end, save the user
   await user.save();
 
-  // then send the response message of playlist added succesfully
+  // then send the response message of playlist added successfully
   return res.json({
-    message: "Song Added to Playlist",
+    message: "added to playlist",
   });
 });

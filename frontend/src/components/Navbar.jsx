@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { UserData } from "../context/User";
+import { assets } from "../assets/assets.js";
+
 
 const Navbar = () => {
   //  navigate to navigate to different route

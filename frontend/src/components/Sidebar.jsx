@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import PlayListCard from "./PlayListCard";
 import { UserData } from "../context/User";
+import { assets } from "../assets/assets.js";
 
 const Sidebar = () => {
   // import user data , info from userData

@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { SongData } from "../context/Song";
 import { GrChapterNext, GrChapterPrevious } from "react-icons/gr";
 import { FaPause, FaPlay } from "react-icons/fa";
+import { assets } from "../assets/assets";
+
 const Player = () => {
   // import all essential data from Song Context
   const {

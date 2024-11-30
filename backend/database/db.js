@@ -6,7 +6,7 @@ const connectDb = async () => {
   try {
     // connection
     await mongoose.connect(process.env.MONGO_URL, {
-      dbName: "Spotify Clone MERN Project",
+      dbName: "SpotifyCloneMERNProject",
     });
 
     // if succesfully connected
