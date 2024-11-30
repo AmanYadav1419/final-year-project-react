@@ -1,8 +1,7 @@
 // To define and store all the user states globally
 
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
-import { createContext } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 // created a usercontext
@@ -11,7 +10,7 @@ const UserContext = createContext();
 // created a provider
 export const UserProvider = ({ children }) => {
   // all states for storing
-  // if user logged in , we put the value of user in this state
+  // if user logged in, we put the value of user in this state
   const [user, setUser] = useState([]);
 
   // to check if user is authenticated or not
@@ -23,65 +22,84 @@ export const UserProvider = ({ children }) => {
   // loading state which will be used when we need to fetch the user, loading state will be shown
   const [loading, setLoading] = useState(true);
 
-  async function registerUser(name, email, password, navigate) {
-    // set BtnLoading true , that means process is started
+  // function to register the user
+  async function registerUser(
+    name,
+    email,
+    password,
+    navigate,
+    fetchSongs,
+    fetchAlbums
+  ) {
+    // set BtnLoading true, that means process is started
     setBtnLoading(true);
     try {
+      // API call to register the user
       const { data } = await axios.post("/api/user/register", {
         name,
         email,
         password,
       });
 
-      // if succes then show this toast message
+      // if successful, show this toast message
       toast.success(data.message);
-      // set user as the user which will get from data
+      // set user as the user which we get from data
       setUser(data.user);
 
-      // set authenctication true,as user is succesfully logged in
+      // set authentication true, as user is successfully logged in
       setIsAuth(true);
 
-      // set BtnLoading false ,as user is succesfully logged in
+      // set BtnLoading false, as user is successfully logged in
       setBtnLoading(false);
 
-      // at the end if process is successfully got then navigate to home page
+      // at the end, if process is successfully completed, navigate to the home page
       navigate("/");
+
+      // after registering, fetch all songs and albums
+      fetchSongs();
+      fetchAlbums();
     } catch (error) {
       // to show the error message in toastify format
       toast.error(error.response.data.message);
 
-      // if any error occured then still set BtnLoading false
+      // if any error occurred, still set BtnLoading false
       setBtnLoading(false);
     }
   }
 
-  async function loginUser(email, password, navigate) {
-    // set BtnLoading true , that means process is started
+  // function to login the user
+  async function loginUser(email, password, navigate, fetchSongs, fetchAlbums) {
+    // set BtnLoading true, that means process is started
     setBtnLoading(true);
     try {
+      // API call to log in the user
       const { data } = await axios.post("/api/user/login", {
         email,
         password,
       });
 
-      // if succes then show this toast message
+      // if successful, show this toast message
       toast.success(data.message);
-      // set user as the user which will get from data
+      // set user as the user which we get from data
       setUser(data.user);
 
-      // set authenctication true,as user is succesfully logged in
+      // set authentication true, as user is successfully logged in
       setIsAuth(true);
 
-      // set BtnLoading false ,as user is succesfully logged in
+      // set BtnLoading false, as user is successfully logged in
       setBtnLoading(false);
 
-      // at the end if process is successfully got then navigate to home page
+      // at the end, if process is successfully completed, navigate to the home page
       navigate("/");
+
+      // after logging in, fetch all songs and albums
+      fetchSongs();
+      fetchAlbums();
     } catch (error) {
       // to show the error message in toastify format
       toast.error(error.response.data.message);
 
-      // if any error occured then still set BtnLoading false
+      // if any error occurred, still set BtnLoading false
       setBtnLoading(false);
     }
   }
@@ -95,49 +113,51 @@ export const UserProvider = ({ children }) => {
       // set the user state to data
       setUser(data);
 
-      // set is auth as true as the user is authenticated
+      // set isAuth as true, as the user is authenticated
       setIsAuth(true);
 
-      // then set loading false , as the user is fethced succesfully
+      // then set loading false, as the user is fetched successfully
       setLoading(false);
     } catch (error) {
       console.log(error);
 
-      // set is auth as false as got an error
+      // set isAuth as false, as an error occurred
       setIsAuth(false);
 
-      // then set loading false , as got an error
+      // then set loading false, as an error occurred
       setLoading(false);
     }
   }
 
-  // logout user function
+  // function to logout the user
   async function logoutUser() {
-    // try catch block
+    // try-catch block
     try {
-      // get the data from the route
+      // API call to log out the user
       const { data } = await axios.get("/api/user/logout");
 
       // then reload the page
       // to remove the user data
       window.location.reload();
     } catch (error) {
+      // if an error occurred, show the error in toastify format
       toast.error(error.response.data.message);
     }
   }
 
-  // to add the song to playlist
+  // function to add a song to the playlist
   async function addToPlaylist(id) {
     try {
-      // first get the song
-      const { data } = await axios.post("/api/user/song" + id);
+      // API call to add the song to the playlist
+      const { data } = await axios.post("/api/user/song/" + id);
 
-      // succes message in toastify format
+      // success message in toastify format
       toast.success(data.message);
 
-      // then call the fetchUser to upadte the user
+      // then call fetchUser to update the user
       fetchUser();
     } catch (error) {
+      // if an error occurred, show the error in toastify format
       toast.error(error.response.data.message);
     }
   }
@@ -146,6 +166,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     fetchUser();
   }, []);
+
   return (
     // value is for providing all the data which will be passed through globally
     <UserContext.Provider
@@ -157,7 +178,7 @@ export const UserProvider = ({ children }) => {
         loading,
         loginUser,
         logoutUser,
-        addToPlaylist
+        addToPlaylist,
       }}
     >
       {children}
@@ -166,6 +187,5 @@ export const UserProvider = ({ children }) => {
   );
 };
 
-export const UserData = () => {
-  useContext(UserContext);
-};
+// export UserData for usage in other components
+export const UserData = () => useContext(UserContext);

@@ -31,7 +31,7 @@ export const SongProvider = ({ children }) => {
       // send the songs data value to the song state
       setSongs(data);
 
-      // after fetching and seting the song data,
+      // after fetching and setting the song data,
       // then the first song of fetched song should be played and visible
       // data[0]._id i.e from data first song
       setSelectedSong(data[0]._id);
@@ -41,14 +41,14 @@ export const SongProvider = ({ children }) => {
     }
   }
 
-  // to store the fethced songs
+  // to store the fetched songs
   const [song, setSong] = useState([]);
 
   // function to get the selected song
   async function fetchSingleSong() {
     try {
       // get the song from the route
-      const { data } = await axios.get("/api/song/single" + selectedSong);
+      const { data } = await axios.get("/api/song/single/" + selectedSong);
 
       // set the songData to data
       setSong(data);
@@ -58,34 +58,34 @@ export const SongProvider = ({ children }) => {
   }
 
   //  function to add albums
-  // and recieve all the new data geted from Admin.jsx
-  // to make all the states empty after album is get added
+  // and receive all the new data get from Admin.jsx
+  // to make all the states empty after album is added
   async function addAlbum(formData, setTitle, setDescription, setFile) {
     setLoading(true);
     try {
-      // to add a album
+      // to add an album
       const { data } = await axios.post("/api/song/album/new", formData);
-      // then send the success message in toastify ui ui format
+      // then send the success message in toastify UI format
       toast.success(data.message);
       setLoading(false);
       // call the fetch album function
       fetchAlbums();
 
-      // empty all the recived states after fetching all albums,
+      // empty all the received states after fetching all albums,
       // after successfully executing the function
       setTitle("");
       setDescription("");
       setFile(null);
     } catch (error) {
-      // show the error in toastify ui format
+      // show the error in toastify UI format
       toast.error(error.response.data.message);
       setLoading(false);
     }
   }
 
   //  function to add songs
-  // and recieve all the new data geted from Admin.jsx
-  // to make all the states empty after album is get added
+  // and receive all the new data get from Admin.jsx
+  // to make all the states empty after song is added
   async function addSong(
     formData,
     setTitle,
@@ -98,13 +98,13 @@ export const SongProvider = ({ children }) => {
     try {
       // to add a song
       const { data } = await axios.post("/api/song/new", formData);
-      // then send the success message in toastify ui ui format
+      // then send the success message in toastify UI format
       toast.success(data.message);
       setLoading(false);
       // call the fetch songs function
       fetchSongs();
 
-      // empty all the recived states after fetching all songs,
+      // empty all the received states after fetching all songs,
       // after successfully executing the function
       setTitle("");
       setDescription("");
@@ -112,17 +112,17 @@ export const SongProvider = ({ children }) => {
       setAlbum("");
       setSinger("");
     } catch (error) {
-      // show the error in toastify ui format
+      // show the error in toastify UI format
       toast.error(error.response.data.message);
       setLoading(false);
     }
   }
 
   // function to add thumbnail
-  // and recieve all the new data geted from Admin.jsx
-  // to make all the states empty after album is get added
+  // and receive all the new data get from Admin.jsx
+  // to make all the states empty after thumbnail is added
   async function addThumbnail(
-    // recive a song id for identify the correct song
+    // receive a song id for identifying the correct song
     id,
     formData,
     setFile
@@ -131,7 +131,7 @@ export const SongProvider = ({ children }) => {
     try {
       // to add a song thumbnail
       const { data } = await axios.post("/api/song/" + id, formData);
-      // then send the success message in toastify ui ui format
+      // then send the success message in toastify UI format
       toast.success(data.message);
       setLoading(false);
       // call the fetch songs function
@@ -140,7 +140,7 @@ export const SongProvider = ({ children }) => {
       // at the end make the state variable to default previous state
       setFile(null);
     } catch (error) {
-      // show the error in toastify ui format
+      // show the error in toastify UI format
       toast.error(error.response.data.message);
       setLoading(false);
     }
@@ -163,20 +163,20 @@ export const SongProvider = ({ children }) => {
   async function deleteSong(id) {
     try {
       // get the correct song to delete the song
-      const { data } = await axios.delete("/api/song" + id);
+      const { data } = await axios.delete("/api/song/" + id);
 
-      // after that return toast sucess message
+      // after that return toast success message
       toast.success(data.message);
 
-      // after deleting the songs execute the fetch function
+      // after deleting the song execute the fetch function
       fetchSongs();
     } catch (error) {
-      // after catching error return the toasr message as error
+      // after catching error return the toast message as error
       toast.error(error.response.data.message);
     }
   }
 
-  //  useeffect to make the fetch function call and for rendering of songs
+  //  useEffect to make the fetch function call and for rendering of songs
   //  and albums
   useEffect(() => {
     // call the fetch function, so when page load/reload the fetch function calls
@@ -190,7 +190,7 @@ export const SongProvider = ({ children }) => {
   // i.e the first song will show
   const [index, setIndex] = useState(0);
 
-  // function for next music controlls
+  // function for next music controls
   function nextMusic() {
     // first check the condition
     if (index === songs.length - 1) {
@@ -209,14 +209,12 @@ export const SongProvider = ({ children }) => {
     }
   }
 
-  // function for previous music controlls
+  // function for previous music controls
   function prevMusic() {
     // first check the condition
     if (index === 0) {
-      // simply return null, to return null
+      // simply return null
       return null;
-      // and the set the selected song with the help of songs song.length
-      setSelectedSong(songs[song.length]._id);
     }
     // else condition
     else {
@@ -231,7 +229,7 @@ export const SongProvider = ({ children }) => {
   // set the state for albumSong
   const [albumSong, setAlbumSong] = useState([]);
 
-  // set the albumdata
+  // set the albumData
   const [albumData, setAlbumData] = useState([]);
 
   // async function for fetch album song
@@ -271,7 +269,7 @@ export const SongProvider = ({ children }) => {
         prevMusic,
         fetchAlbumSong,
         albumSong,
-        albumData
+        albumData,
       }}
     >
       {children}
@@ -281,5 +279,5 @@ export const SongProvider = ({ children }) => {
 
 // export songData to use further in different files
 export const SongData = () => {
-  useContext(SongContext);
+  return useContext(SongContext);
 };

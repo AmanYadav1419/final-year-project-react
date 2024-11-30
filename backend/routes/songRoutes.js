@@ -15,7 +15,7 @@ const router = express.Router();
 router.post("/album/new", isAuth, uploadFile, createAlbum);
 
 // to find the album below is the route
-router.get("/album/all", isAuth, getAllAlbums)
+router.get("/album/all", isAuth, getAllAlbums);
 
 // to add a song below is the route
 router.post("/new", isAuth, uploadFile, addSong);
