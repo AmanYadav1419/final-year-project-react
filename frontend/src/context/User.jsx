@@ -167,5 +167,5 @@ export const UserProvider = ({ children }) => {
 };
 
 export const UserData = () => {
-  useContext(UserContext);
+  return useContext(UserContext);
 };
