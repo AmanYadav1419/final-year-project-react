@@ -7,7 +7,7 @@ import cloudinary from "cloudinary";
 dotenv.config();
 
 // config of cloudinary
-cloudinary.v2({
+cloudinary.v2.config({
   Cloud_name: process.env.Cloud_Name,
   api_key: process.env.Cloud_Api,
   api_secret: process.env.Cloud_Secret,
