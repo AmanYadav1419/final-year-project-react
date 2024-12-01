@@ -270,6 +270,8 @@ export const SongProvider = ({ children }) => {
         fetchAlbumSong,
         albumSong,
         albumData,
+        fetchSongs,
+        fetchAlbums
       }}
     >
       {children}

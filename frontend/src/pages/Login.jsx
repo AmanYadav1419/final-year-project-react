@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserData } from "../context/User";
+import { SongData } from "../context/Song";
 
 const headingText = "Login to RhythmNet";
 
@@ -12,6 +13,9 @@ const Login = () => {
   // accept all the data from user context i.e fn name UserData()
   const { loginUser, btnLoading } = UserData();
 
+  // accept all the data from Song context i.e fn name SongData()
+  const { fetchSongs, fetchAlbums } = SongData();
+
   // navigate function to navigate from one route to another route
   const navigate = useNavigate();
 
@@ -22,8 +26,8 @@ const Login = () => {
 
     // for checking all the values in console
     // console.log(email, password);
-    // send the essential data 
-    loginUser(email, password, navigate);
+    // send the essential data
+    loginUser(email, password, navigate, fetchSongs, fetchAlbums);
   };
 
   return (

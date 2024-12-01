@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserData } from "../context/User";
+import { SongData } from "../context/Song";
 
 const headingText = "Register to RhythmNet";
 
@@ -16,6 +17,9 @@ const Register = () => {
   // navigate function to navigate from one route to another route
   const navigate = useNavigate();
 
+  // accept all the data from Song context i.e fn name SongData()
+  const { fetchSongs, fetchAlbums } = SongData();
+
   // form submit handler
   const submitHandler = (e) => {
     // to stop the page reload of the form after submisson of form
@@ -24,7 +28,7 @@ const Register = () => {
     // for checking all the values in console
     // console.log(name, email, password);
     // send the essential data
-    registerUser(name, email, password, navigate);
+    registerUser(name, email, password, navigate, fetchSongs, fetchAlbums);
   };
 
   return (
