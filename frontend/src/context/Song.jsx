@@ -280,6 +280,4 @@ export const SongProvider = ({ children }) => {
 };
 
 // export songData to use further in different files
-export const SongData = () => {
-  return useContext(SongContext);
-};
+export const SongData = () =>  useContext(SongContext);

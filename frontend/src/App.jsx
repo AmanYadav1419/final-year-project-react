@@ -10,42 +10,29 @@ import PlayList from "./pages/PlayList";
 import Album from "./pages/Album";
 
 const App = () => {
-  // import essential data from context
   const { loading, user, isAuth } = UserData();
   return (
     <>
-      {/* add conditon of loading */}
-      {/* if loading is true then show loading icon */}
       {loading ? (
         <Loading />
       ) : (
-        // if loading is false then show the information of realted page or show data
         <BrowserRouter>
           <Routes>
-            {/* defines the routes for different pages  */}
-            {/* if user is authenticatd then only go to home page else go to login page */}
             <Route path="/" element={isAuth ? <Home /> : <Login />} />
-
-            {/* if user is authenticatd then only go to Playlist page else go to login page */}
             <Route
               path="/playlist"
-              // send the prop user to playlist component
               element={isAuth ? <PlayList user={user} /> : <Login />}
             />
-
-            {/* if user is authenticatd then only go to Album page else go to login page */}
             <Route
               path="/album/:id"
-              // send the prop user to Album component
               element={isAuth ? <Album user={user} /> : <Login />}
             />
-
-            {/* if user is authenticatd then only go to Admin page else go to login page */}
+            <Route
+              path="/playlist"
+              element={isAuth ? <PlayList user={user} /> : <Login />}
+            />
             <Route path="/admin" element={isAuth ? <Admin /> : <Login />} />
-
-            {/* if user is authenticatd then only go to home page else go to login page */}
             <Route path="/login" element={isAuth ? <Home /> : <Login />} />
-            {/* if user is authenticatd then only go to home page else go to register page */}
             <Route
               path="/register"
               element={isAuth ? <Home /> : <Register />}
