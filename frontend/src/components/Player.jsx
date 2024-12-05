@@ -14,6 +14,7 @@ const Player = () => {
     prevMusic,
   } = SongData();
 
+
   useEffect(() => {
     fetchSingleSong();
   }, [selectedSong]);
@@ -66,6 +67,7 @@ const Player = () => {
     audioRef.current.currentTime = newTime;
     setProgress(newTime);
   };
+  
   return (
     <div>
       {song && (
