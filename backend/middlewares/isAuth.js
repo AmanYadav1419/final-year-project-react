@@ -11,12 +11,12 @@ export const isAuth = async (req, res, next) => {
     // if we didn't get any cookie, return message of please login
     // i.e unauthorised attempt
     if (!token)
-      return res.status(43).json({
+      return res.status(403).json({
         message: "Please Login First",
       });
 
     // for decoding the data via token and jwt seceret key
-    const decodedData = jwt.verify(token, process.env.jwt_secret);
+    const decodedData = jwt.verify(token, process.env.Jwt_secret);
 
     // if any issue in decoded data, i.e token is expired
     if (!decodedData)
