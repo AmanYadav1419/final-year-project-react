@@ -1,32 +1,23 @@
+import { Album } from "../models/Album.js";
+import { Song } from "../models/Song.js";
 import TryCatch from "../utils/TryCatch.js";
 import getDataurl from "../utils/urlGenerator.js";
 import cloudinary from "cloudinary";
-import { Album } from "../models/Album.js";
-import { Song } from "../models/Song.js";
 
-// fist function is create album
 export const createAlbum = TryCatch(async (req, res) => {
-  // firstly check that user role is admin or not
-  // if user role is not admin return error of not an admin / unauthorised
   if (req.user.role !== "admin")
     return res.status(403).json({
-      message: "You are not an admin",
+      message: "You are not admin",
     });
 
-  // get the title and description from request body
   const { title, description } = req.body;
 
-  // get the file from request
   const file = req.file;
 
-  // get the file url from getDataurl fn
   const fileUrl = getDataurl(file);
 
-  // get the value from cloduinary
-  // fileUrl.content is thumbnail
   const cloud = await cloudinary.v2.uploader.upload(fileUrl.content);
 
-  // in that created an album
   await Album.create({
     title,
     description,
@@ -36,49 +27,33 @@ export const createAlbum = TryCatch(async (req, res) => {
     },
   });
 
-  // after that album is added response with a message
   res.json({
-    message: "Album Added Sucessfully",
+    message: "Album Added",
   });
 });
 
-// created a controller for getting all albums
 export const getAllAlbums = TryCatch(async (req, res) => {
-  // in that find all albums
   const albums = await Album.find();
 
-  // then send the response of finded albums
   res.json(albums);
 });
 
-// created a controller to add a song / music
 export const addSong = TryCatch(async (req, res) => {
-  // firstly check that user role is admin or not
-  // if user role is not admin return error of not an admin / unauthorised
   if (req.user.role !== "admin")
     return res.status(403).json({
-      message: "You are not an admin",
+      message: "You are not admin",
     });
 
-  // get the all required info from request body
   const { title, description, singer, album } = req.body;
 
-  // get the file from request
   const file = req.file;
 
-  // get the file url from getDataurl fn
   const fileUrl = getDataurl(file);
 
-  // get the value from cloduinary
-  // fileUrl.content is thumbnail
-  // to add only audio file thats why written resource type
   const cloud = await cloudinary.v2.uploader.upload(fileUrl.content, {
-    // write the resource type as video as
-    // in cloudinary for audio we write type as video
     resource_type: "video",
   });
 
-  // in that created a Song
   await Song.create({
     title,
     description,
@@ -90,33 +65,23 @@ export const addSong = TryCatch(async (req, res) => {
     album,
   });
 
-  // after that song is added response with a message
   res.json({
-    message: "Song Added Sucessfully",
+    message: "Song Added",
   });
 });
 
-// created a controller to add thumbnail
 export const addThumbnail = TryCatch(async (req, res) => {
-  // firstly check that user role is admin or not
-  // if user role is not admin return error of not an admin / unauthorised
   if (req.user.role !== "admin")
     return res.status(403).json({
-      message: "You are not an admin",
+      message: "You are not admin",
     });
 
-  // get the file from request
   const file = req.file;
 
-  // get the file url from getDataurl fn
   const fileUrl = getDataurl(file);
 
-  // get the value from cloduinary
-  // fileUrl.content is thumbnail
   const cloud = await cloudinary.v2.uploader.upload(fileUrl.content);
 
-  // to updated the music / song
-  // first find the song by id and then update
   await Song.findByIdAndUpdate(
     req.params.id,
     {
@@ -128,53 +93,34 @@ export const addThumbnail = TryCatch(async (req, res) => {
     { new: true }
   );
 
-  // after that thumbnail is added response with a message
   res.json({
-    message: "Thumbnail Added Sucessfully",
+    message: "thumbnail Added",
   });
 });
 
-// created a controller to fetch/get all songs
 export const getAllSongs = TryCatch(async (req, res) => {
-  // in that find the songs
   const songs = await Song.find();
 
-  // then send the response of songs
   res.json(songs);
 });
 
-// created a controller to fetch/get all songs by albums
 export const getAllSongsByAlbum = TryCatch(async (req, res) => {
-  // in that find the album by its id
-  // it will get from request -> params -> id
   const album = await Album.findById(req.params.id);
-
-  // find songs through albums
   const songs = await Song.find({ album: req.params.id });
 
-  // then send the response as album and songs of finded songs by albums
   res.json({ album, songs });
 });
 
-// created a controller to delete the song
 export const deleteSong = TryCatch(async (req, res) => {
-  // first find the song by id
   const song = await Song.findById(req.params.id);
 
-  // delete the song
   await song.deleteOne();
 
-  // then send the response od delete song
-  res.json({
-    message: "Song Deleted Successfully",
-  });
+  res.json({ message: "Song Deleted" });
 });
 
-// to get a single song to play
 export const getSingleSong = TryCatch(async (req, res) => {
-  // first find the song by id
   const song = await Song.findById(req.params.id);
 
-  // then send the song as response
   res.json(song);
 });
